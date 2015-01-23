@@ -13,7 +13,6 @@ public class Drivetrain {
 		leftb = new Victor(lb);
 		righta = new Victor(ra);
 		rightb = new Victor(rb);
-
 	}
 
 	public void tankDrive(double leftv, double rightv) {
@@ -22,5 +21,17 @@ public class Drivetrain {
 
 		righta.set(rightv);
 		rightb.set(rightv);
+	}
+	
+	
+	/**
+	 * method to loosely couple teleop drive logic from drive control logic. 
+	 * @param leftIn
+	 * @param rightIn
+	 */
+	public void teleopDrive(double leftIn, double rightIn) {
+		
+		// Todo: implement negative-negative inertia or similar ramping here. -JPG
+		tankDrive(leftIn, rightIn);
 	}
 }
