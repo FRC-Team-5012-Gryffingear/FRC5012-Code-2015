@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public class FileLogger {
 
   public FileLogger(String logDir) {
+
     // Get a copy of the existing output streams
     PrintStream out = System.out;
     PrintStream err = System.err;
@@ -28,17 +29,19 @@ public class FileLogger {
     String alliance = (ds.getAlliance() == Alliance.Red) ? "RED" : "BLUE";
     String FMS = (ds.isFMSAttached()) ? "MATCH" : "PRACTICE";
     // Replace the existing output streams with the file writers
-    System.setOut(new PrintStream(new FileWriter(logDir + "out/" + FMS + "_"
-        + alliance + "_" + today.toString() + ".txt", out)));
-    System.setErr(new PrintStream(new FileWriter(logDir + "err/" + FMS + "_"
-        + alliance + "_" + today.toString() + ".txt", err)));
+    System.setOut(new PrintStream(new FileWriter(logDir + "out/" + FMS + "_" + alliance + "_"
+        + today.toString() + ".txt", out)));
+    System.setErr(new PrintStream(new FileWriter(logDir + "err/" + FMS + "_" + alliance + "_"
+        + today.toString() + ".txt", err)));
   }
 
   private class FileWriter extends OutputStream {
+
     private PrintStream consoleout;
     private BufferedOutputStream fileout;
 
     public FileWriter(String filename, PrintStream original) {
+
       consoleout = original;
       try {
         fileout = new BufferedOutputStream(new FileOutputStream(filename));

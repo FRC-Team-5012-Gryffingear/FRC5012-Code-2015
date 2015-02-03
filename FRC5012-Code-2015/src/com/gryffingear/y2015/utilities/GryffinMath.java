@@ -12,6 +12,7 @@ public class GryffinMath {
    * @return
    */
   public static boolean equalsTolerance(double a, double b, double tolerance) {
+
     return Math.abs(a - b) < tolerance;
   }
 
@@ -31,8 +32,8 @@ public class GryffinMath {
    *          output value's upper limit
    * @return the scaled value
    */
-  public static float map(float value, float istart, float istop, float ostart,
-      float ostop) {
+  public static float map(float value, float istart, float istop, float ostart, float ostop) {
+
     return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
   }
 
@@ -48,6 +49,7 @@ public class GryffinMath {
    * @return true if low < input < high
    */
   public static boolean isInBand(double input, double low, double high) {
+
     return input > low && input < high;
   }
 
@@ -59,6 +61,7 @@ public class GryffinMath {
    * @return
    */
   public static double deadband(double in, double width) {
+
     if (Math.abs(in) < width) {
       in = 0;
     }
@@ -73,11 +76,13 @@ public class GryffinMath {
    * @return
    */
   public static double truncate(double value, double places) {
+
     double multiplier = Math.pow(10, places);
     return Math.floor(multiplier * value) / multiplier;
   }
 
   public static double fMod(double value, double x) {
+
     // Negate if and only if base is negative.
     // (Java's modulo isn't mathematically pretty in this way.)
     double sign = (value < 0) ? -1 : 1;
@@ -85,6 +90,7 @@ public class GryffinMath {
   }
 
   public static double cap(double in, double low, double high) {
+
     if (in < low) {
       in = low;
     }
@@ -103,6 +109,7 @@ public class GryffinMath {
    * @return
    */
   public static double signedSquare(double in, double k) {
+
     return in * Math.abs(in) * k;
   }
 

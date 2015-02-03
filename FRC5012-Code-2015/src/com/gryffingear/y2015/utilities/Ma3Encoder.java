@@ -18,6 +18,7 @@ public class Ma3Encoder extends AnalogInput {
   private double m_position = 0.0;
 
   public Ma3Encoder(int port) {
+
     super(port);
   }
 
@@ -27,12 +28,14 @@ public class Ma3Encoder extends AnalogInput {
    * @return
    */
   public double get() {
+
     // Todo: get this to work.
     // Convert sawtooth wave of encoder signal to continuous number.
     return m_position;
   }
 
   public void reset() {
+
     m_position = 0;
   }
 

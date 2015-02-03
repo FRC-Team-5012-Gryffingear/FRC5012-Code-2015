@@ -1,8 +1,6 @@
 package com.gryffingear.y2015.season;
 
-import com.gryffingear.y2015.systems.Drivetrain;
 import com.gryffingear.y2015.systems.Robot;
-import com.gryffingear.y2015.systems.Claw;
 import com.gryffingear.y2015.config.Ports;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -17,18 +15,22 @@ public class Main extends IterativeRobot {
   Robot bot = Robot.getInstance();
   PowerDistributionPanel pdp = new PowerDistributionPanel();
 
+  @Override
   public void robotInit() {
 
   }
 
+  @Override
   public void autonomousInit() {
 
   }
 
+  @Override
   public void autonomousPeriodic() {
 
   }
 
+  @Override
   public void teleopInit() {
 
     pdp.clearStickyFaults();
@@ -36,7 +38,9 @@ public class Main extends IterativeRobot {
 
   }
 
+  @Override
   public void teleopPeriodic() {
+
     // double throttle = (leftstick.getRawAxis(0) +
     // rightstick.getRawAxis(1)) /2;
     // double turning = (leftstick.getRawAxis(0) - rightstick.getRawAxis(1))
@@ -64,10 +68,12 @@ public class Main extends IterativeRobot {
   /**
    * This function is called periodically during test mode
    */
+  @Override
   public void testPeriodic() {
 
   }
 
+  @Override
   public void disabledPeriodic() {
 
   }

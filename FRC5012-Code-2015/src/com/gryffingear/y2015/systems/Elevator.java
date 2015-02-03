@@ -14,8 +14,8 @@ public class Elevator {
   private Ma3Encoder posRef = null;
   private ElevatorPositionController epc = null;
 
-  public Elevator(int elevator_port, int lowerlimit_port, int upperlimit_port,
-      int encoderPort) {
+  public Elevator(int elevator_port, int lowerlimit_port, int upperlimit_port, int encoderPort) {
+
     upperlimit_switch = new DigitalInput(upperlimit_port);
     lowerlimit_switch = new DigitalInput(lowerlimit_port);
     elevatorMotor = configureTalon(new CANTalon(elevator_port));
@@ -35,33 +35,38 @@ public class Elevator {
   }
 
   public void set(double value) {
+
     if (value < 0.0 && !lowerlimit_switch.get()) {
       value = 0.0;
     } else if (value < 1.0 && !upperlimit_switch.get()) {
       value = 0.0;
       elevatorMotor.set(value);
-    } 
+    }
   }
 
   private double openLoopInput = 0.0;
 
   public void setOpenLoop(double in) {
+
     openLoopInput = in;
   }
 
   private double position = 0.0; // Todo set to default position
 
   public void setPosition(double position) {
+
     this.position = position;
   }
 
   private int state = 0;
 
   public void setState(int in) {
+
     this.state = in;
   }
 
   public static class States {
+
     public static final int DISABLED = 0;
     public static final int OPEN_LOOP = 1;
     public static final int CLOSED_LOOP = 2;
@@ -71,6 +76,7 @@ public class Elevator {
   }
 
   public void run() {
+
     double output = 0.0;
     epc.setPosition(position);
     switch (state) {

@@ -3,6 +3,7 @@ package com.gryffingear.y2015.systems;
 import edu.wpi.first.wpilibj.CANTalon;
 
 public class Drivetrain {
+
   private CANTalon lefta = null;
   private CANTalon leftb = null;
   private CANTalon righta = null;
@@ -20,6 +21,7 @@ public class Drivetrain {
   }
 
   private CANTalon configureTalon(CANTalon in) {
+
     in.clearStickyFaults();
     in.changeControlMode(CANTalon.ControlMode.PercentVbus);
     in.setVoltageRampRate(32.0); // Todo: move this into constants.
@@ -28,6 +30,7 @@ public class Drivetrain {
   }
 
   public void tankDrive(double leftv, double rightv) {
+
     lefta.set(-leftv);
     leftb.set(-leftv);
 
