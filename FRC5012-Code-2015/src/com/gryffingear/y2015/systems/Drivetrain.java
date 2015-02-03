@@ -8,6 +8,8 @@ public class Drivetrain {
 	private CANTalon righta = null;
 	private CANTalon rightb = null;
 	
+	// Todo: comments. 
+	
 
 	public Drivetrain(int la, int lb, int ra, int rb) {
 		
@@ -19,10 +21,9 @@ public class Drivetrain {
 	}
 	
 	private CANTalon configureTalon(CANTalon in) {
-
 		in.clearStickyFaults();
 		in.changeControlMode(CANTalon.ControlMode.PercentVbus);
-		in.setVoltageRampRate(32.0);
+		in.setVoltageRampRate(32.0);	// Todo: move this into constants. 
 		in.enableControl();
 		return in;
 	}

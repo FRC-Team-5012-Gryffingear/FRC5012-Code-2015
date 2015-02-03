@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class Main extends IterativeRobot {
 
-	Joystick leftstick = new Joystick(Ports.LEFT_JOY_PORT);
-	Joystick rightstick = new Joystick(Ports.RIGHT_JOY_PORT);
-	Joystick gamepad = new Joystick(Ports.OPERATOR_JOY_PORT);
+	Joystick leftstick = new Joystick(Ports.Controls.LEFT_JOY_PORT);
+	Joystick rightstick = new Joystick(Ports.Controls.RIGHT_JOY_PORT);
+	Joystick gamepad = new Joystick(Ports.Controls.OPERATOR_JOY_PORT);
 
 	Robot bot = Robot.getInstance();
 	PowerDistributionPanel pdp = new PowerDistributionPanel();
@@ -49,9 +49,9 @@ public class Main extends IterativeRobot {
 		
 		  bot.claw.setClaw(gamepad.getRawButton(6));
 		  
-		  if (gamepad.getRawButton(7)) { bot.elevator.setElevator(.5); } else if
-		  (gamepad.getRawButton(8)) { bot.elevator.setElevator(-.33); } else {
-		  bot.elevator.setElevator(0); }
+		  if (gamepad.getRawButton(7)) { bot.elevator.set(.5); } else if
+		  (gamepad.getRawButton(8)) { bot.elevator.set(-.33); } else {
+		  bot.elevator.set(0); }
 		 
 		
 		System.out.println(pdp.getTotalCurrent());

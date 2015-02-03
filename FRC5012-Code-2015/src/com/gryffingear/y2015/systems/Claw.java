@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class Claw {
 
+	// Todo: comments
 	private Solenoid clawSolenoid = null;
 
 	public Claw(int clawSol) {
