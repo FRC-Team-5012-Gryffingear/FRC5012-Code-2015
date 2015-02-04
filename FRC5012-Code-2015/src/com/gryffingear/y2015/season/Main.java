@@ -14,7 +14,7 @@ public class Main extends IterativeRobot {
 
   Robot bot = Robot.getInstance();
   PowerDistributionPanel pdp = new PowerDistributionPanel();
-
+  
   @Override
   public void robotInit() {
 
@@ -35,7 +35,7 @@ public class Main extends IterativeRobot {
 
     pdp.clearStickyFaults();
     pdp.getTotalCurrent();
-
+//test
   }
 
   @Override
