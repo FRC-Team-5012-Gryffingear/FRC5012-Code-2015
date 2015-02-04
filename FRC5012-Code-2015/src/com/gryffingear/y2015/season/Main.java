@@ -55,7 +55,6 @@ public class Main extends IterativeRobot {
       bot.elevator.set(0);
     }
     System.out.println(pdp.getTotalCurrent());
-    //test
 
   }
 
