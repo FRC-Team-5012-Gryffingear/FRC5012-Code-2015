@@ -36,12 +36,6 @@ public class Main extends IterativeRobot {
 
     pdp.clearStickyFaults();
     pdp.getTotalCurrent();
-<<<<<<< HEAD
-//test
-=======
-
-    // test66
->>>>>>> FETCH_HEAD
   }
 
   @Override

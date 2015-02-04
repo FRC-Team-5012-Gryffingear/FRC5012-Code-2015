@@ -15,7 +15,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
-.class
+*.class
 
 # External tool builders
 .externalToolBuilders/
@@ -216,3 +216,4 @@ pip-log.txt
 .mr.developer.cfg
 /11-22-14/nbproject/private/
 /11-22-2014/nbproject/private/
+/FRC5012-Code-2015/bin/*
