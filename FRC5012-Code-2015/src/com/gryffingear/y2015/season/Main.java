@@ -1,7 +1,8 @@
 package com.gryffingear.y2015.season;
 
-import com.gryffingear.y2015.systems.Robot;
 import com.gryffingear.y2015.config.Ports;
+import com.gryffingear.y2015.systems.Robot;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -14,7 +15,7 @@ public class Main extends IterativeRobot {
 
   Robot bot = Robot.getInstance();
   PowerDistributionPanel pdp = new PowerDistributionPanel();
-
+  
   @Override
   public void robotInit() {
 
@@ -36,6 +37,7 @@ public class Main extends IterativeRobot {
     pdp.clearStickyFaults();
     pdp.getTotalCurrent();
 
+    // test66
   }
 
   @Override
