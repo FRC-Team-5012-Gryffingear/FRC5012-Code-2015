@@ -1,5 +1,7 @@
 package com.gryffingear.y2015.systems;
 
+import com.gryffingear.y2015.config.Constants;
+
 import edu.wpi.first.wpilibj.CANTalon;
 
 public class Drivetrain {
@@ -24,7 +26,8 @@ public class Drivetrain {
 
     in.clearStickyFaults();
     in.changeControlMode(CANTalon.ControlMode.PercentVbus);
-    in.setVoltageRampRate(32.0); // Todo: move this into constants.
+    in.setVoltageRampRate(Constants.Drivetrain.VRAMP_RATE); // Todo: move this
+                                                            // into constants.
     in.enableControl();
     return in;
   }

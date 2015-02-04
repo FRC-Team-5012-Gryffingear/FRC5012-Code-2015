@@ -4,9 +4,9 @@ public class Ports {
 
   public static class Controls {
 
-    public static int LEFT_JOY_PORT = 0;
+    public static int DRIVER_PORT = 0;
     public static int RIGHT_JOY_PORT = 1;
-    public static int OPERATOR_JOY_PORT = 2;
+    public static int OPERATOR_PORT = 2;
   }
 
   public static class Drivetrain {
@@ -22,8 +22,6 @@ public class Ports {
     public static int ELEVATOR_MOTOR_PORT = 1;
     public static int ELEVATOR_LOWER_LIMIT_SWITCH = 0;
     public static int ELEVATOR_UPPER_LIMIT_SWITCH = 0;
-
-    // test
   }
 
   public static class Claw {

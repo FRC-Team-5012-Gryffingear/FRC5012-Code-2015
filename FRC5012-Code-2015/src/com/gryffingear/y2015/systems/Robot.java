@@ -25,10 +25,6 @@ public class Robot {
 
     elevator = new Elevator(Ports.Elevator.ELEVATOR_MOTOR_PORT,
         Ports.Elevator.ELEVATOR_LOWER_LIMIT_SWITCH, Ports.Elevator.ELEVATOR_UPPER_LIMIT_SWITCH, 0);// Todo:
-                                                                                                   // get
-                                                                                                   // real
-    // encoder
-    // port...
 
     Compressor compressor = new Compressor(Ports.Pneumatics.PCM_CAN_ID);
     compressor.setClosedLoopControl(true);

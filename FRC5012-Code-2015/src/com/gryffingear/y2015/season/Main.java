@@ -9,9 +9,8 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class Main extends IterativeRobot {
 
-  Joystick leftstick = new Joystick(Ports.Controls.LEFT_JOY_PORT);
-  Joystick rightstick = new Joystick(Ports.Controls.RIGHT_JOY_PORT);
-  Joystick gamepad = new Joystick(Ports.Controls.OPERATOR_JOY_PORT);
+  Joystick driver = new Joystick(Ports.Controls.DRIVER_PORT);
+  Joystick operator = new Joystick(Ports.Controls.OPERATOR_PORT);
 
   Robot bot = Robot.getInstance();
   PowerDistributionPanel pdp = new PowerDistributionPanel();
@@ -41,26 +40,20 @@ public class Main extends IterativeRobot {
   @Override
   public void teleopPeriodic() {
 
-    // double throttle = (leftstick.getRawAxis(0) +
-    // rightstick.getRawAxis(1)) /2;
-    // double turning = (leftstick.getRawAxis(0) - rightstick.getRawAxis(1))
-    // /2;
-
     // Driver Controls
-    bot.drive.tankDrive(gamepad.getRawAxis(1), gamepad.getRawAxis(3));
+    bot.drive.tankDrive(driver.getRawAxis(1), driver.getRawAxis(3));
 
     // Operator Controls
 
-    bot.claw.setClaw(gamepad.getRawButton(6));
+    bot.claw.setClaw(operator.getRawButton(6));
 
-    if (gamepad.getRawButton(7)) {
+    if (operator.getRawButton(7)) {
+      bot.elevator.set(-1);
+    } else if (operator.getRawButton(8)) {
       bot.elevator.set(.5);
-    } else if (gamepad.getRawButton(8)) {
-      bot.elevator.set(-.33);
     } else {
       bot.elevator.set(0);
     }
-
     System.out.println(pdp.getTotalCurrent());
 
   }

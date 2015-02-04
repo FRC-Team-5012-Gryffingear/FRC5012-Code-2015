@@ -38,10 +38,11 @@ public class Elevator {
 
     if (value < 0.0 && !lowerlimit_switch.get()) {
       value = 0.0;
-    } else if (value < 1.0 && !upperlimit_switch.get()) {
+    } else if (value > 0.0 && !upperlimit_switch.get()) {
       value = 0.0;
-      elevatorMotor.set(value);
     }
+
+    elevatorMotor.set(value);
   }
 
   private double openLoopInput = 0.0;
@@ -81,35 +82,53 @@ public class Elevator {
     epc.setPosition(position);
     switch (state) {
     case States.DISABLED: // Disabled state. Stop everything
+
       output = 0.0;
       epc.setEnabled(false);
+
       break;
+
     case States.OPEN_LOOP: // Open loop state. send input to output
+
       output = openLoopInput;
+
       break;
     case States.CLOSED_LOOP: // Open loop state. send input to output
+
       epc.setEnabled(true);
       if (epc.isUnder())
         state = States.MOVING_UP;
       else if (!epc.isUnder())
         state = States.MOVING_DN;
+
+      output = epc.get();
+
       break;
     case States.MOVING_UP: // Closed loop moving up. Higher gains = moar
       // power
+
       epc.setEnabled(true);
       epc.setGains(1.0); // Todo: move to constants.
       if (epc.isNearTarget())
         state = States.HOLDING;
+
+      output = epc.get();
+
       break;
     case States.MOVING_DN: // Closed loop moving down, lower gains = slower
       // to fall
+
       epc.setEnabled(true);
       epc.setGains(0.5);
       if (epc.isNearTarget())
         state = States.HOLDING;
+
+      output = epc.get();
+
       break;
     case States.HOLDING: // Closed loop holding position, super high gains =
       // super holding power
+
       epc.setEnabled(true);
       epc.setGains(2.0);
       // Exit holding state if
@@ -117,8 +136,11 @@ public class Elevator {
         state = States.MOVING_UP;
       if ((!epc.isNearTarget()) && (!epc.isUnder()))
         state = States.MOVING_DN;
+
+      output = epc.get();
+
       break;
     }
-
+    elevatorMotor.set(output);
   }
 }
