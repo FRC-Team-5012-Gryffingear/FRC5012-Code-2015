@@ -42,6 +42,11 @@ public class ElevatorPositionController {
     this.pos = newPos;
   }
 
+  public boolean getEnabled() {
+
+    return this.en;
+  }
+
   public boolean isNearTarget() {
 
     return GryffinMath.equalsTolerance(pos, ref.get(), 0.5);

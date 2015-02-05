@@ -3,6 +3,7 @@ package com.gryffingear.y2015.systems;
 import com.gryffingear.y2015.config.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Gyro;
 
 public class Drivetrain {
 
@@ -11,14 +12,20 @@ public class Drivetrain {
   private CANTalon righta = null;
   private CANTalon rightb = null;
 
+  private Gyro yaw = null;
+
   // Todo: comments.
 
-  public Drivetrain(int la, int lb, int ra, int rb) {
+  public Drivetrain(int la, int lb, int ra, int rb, int gyro) {
 
     lefta = configureTalon(new CANTalon(la));
     leftb = configureTalon(new CANTalon(lb));
     righta = configureTalon(new CANTalon(ra));
     rightb = configureTalon(new CANTalon(rb));
+
+    yaw = new Gyro(gyro);
+    yaw.initGyro();
+    // yaw.reset();
 
   }
 
@@ -30,6 +37,11 @@ public class Drivetrain {
                                                             // into constants.
     in.enableControl();
     return in;
+  }
+
+  public double getYaw() {
+
+    return yaw.getAngle();
   }
 
   public void tankDrive(double leftv, double rightv) {

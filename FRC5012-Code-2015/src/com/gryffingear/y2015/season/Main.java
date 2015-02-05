@@ -15,6 +15,8 @@ public class Main extends IterativeRobot {
   Robot bot = Robot.getInstance();
   PowerDistributionPanel pdp = new PowerDistributionPanel();
   
+  // FileLogger log = new FileLogger("/home/lvuser/");
+
   @Override
   public void robotInit() {
 
@@ -54,7 +56,7 @@ public class Main extends IterativeRobot {
     } else {
       bot.elevator.set(0);
     }
-    System.out.println(pdp.getTotalCurrent());
+    System.out.println("c:" + pdp.getCurrent(0));
 
   }
 

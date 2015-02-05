@@ -82,14 +82,13 @@ public class Elevator {
     epc.setPosition(position);
     switch (state) {
     case States.DISABLED: // Disabled state. Stop everything
-
       output = 0.0;
       epc.setEnabled(false);
 
       break;
 
     case States.OPEN_LOOP: // Open loop state. send input to output
-
+      epc.setEnabled(false);
       output = openLoopInput;
 
       break;
@@ -101,8 +100,6 @@ public class Elevator {
       else if (!epc.isUnder())
         state = States.MOVING_DN;
 
-      output = epc.get();
-
       break;
     case States.MOVING_UP: // Closed loop moving up. Higher gains = moar
       // power
@@ -112,8 +109,6 @@ public class Elevator {
       if (epc.isNearTarget())
         state = States.HOLDING;
 
-      output = epc.get();
-
       break;
     case States.MOVING_DN: // Closed loop moving down, lower gains = slower
       // to fall
@@ -122,8 +117,6 @@ public class Elevator {
       epc.setGains(0.5);
       if (epc.isNearTarget())
         state = States.HOLDING;
-
-      output = epc.get();
 
       break;
     case States.HOLDING: // Closed loop holding position, super high gains =
@@ -137,10 +130,13 @@ public class Elevator {
       if ((!epc.isNearTarget()) && (!epc.isUnder()))
         state = States.MOVING_DN;
 
-      output = epc.get();
-
       break;
     }
+
+    if (epc.getEnabled()) {
+      output = epc.get();
+    }
+
     elevatorMotor.set(output);
   }
 }
