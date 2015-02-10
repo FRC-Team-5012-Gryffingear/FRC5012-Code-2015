@@ -30,6 +30,8 @@ public class Elevator {
 
     in.clearStickyFaults();
     in.changeControlMode(CANTalon.ControlMode.PercentVbus);
+    in.setVoltageRampRate(144);
+    in.enableBrakeMode(true);
     in.enableControl();
     return in;
   }
@@ -45,6 +47,15 @@ public class Elevator {
     elevatorMotor.set(value);
   }
 
+  public void resetEncoder() {
+
+    this.posRef.reset();
+  }
+
+  public double getEncoder() {
+
+    return this.posRef.get();
+  }
   private double openLoopInput = 0.0;
 
   public void setOpenLoop(double in) {

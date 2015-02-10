@@ -45,11 +45,15 @@ public class Drivetrain {
   }
 
   public void tankDrive(double leftv, double rightv) {
-
     lefta.set(-leftv);
     leftb.set(-leftv);
 
     righta.set(-rightv);
     rightb.set(rightv);
+  }
+
+  public void tankDrive(double[] input) {
+
+    tankDrive(input[0], input[1]);
   }
 }

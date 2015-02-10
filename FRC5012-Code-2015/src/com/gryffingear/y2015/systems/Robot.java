@@ -16,6 +16,8 @@ public class Robot {
 
   public Claw claw = null;
 
+  public LedStrips led = null;
+
   private Robot() {
 
     drive = new Drivetrain(Ports.Drivetrain.DRIVE_LEFT_A_PORT, Ports.Drivetrain.DRIVE_LEFT_B_PORT,
@@ -25,15 +27,13 @@ public class Robot {
     claw = new Claw(Ports.Claw.CLAW_SOLENOID_PORT);
 
     elevator = new Elevator(Ports.Elevator.ELEVATOR_MOTOR_PORT,
-        Ports.Elevator.ELEVATOR_LOWER_LIMIT_SWITCH, Ports.Elevator.ELEVATOR_UPPER_LIMIT_SWITCH, 2);// Todo:
+        Ports.Elevator.ELEVATOR_LOWER_LIMIT_SWITCH, Ports.Elevator.ELEVATOR_UPPER_LIMIT_SWITCH,
+        Ports.Elevator.ELEVATOR_ENCODER_PORT);// Todo:
+    led = new LedStrips(Ports.Led.LEFT_PORT, Ports.Led.RIGHT_PORT);
 
     Compressor compressor = new Compressor(Ports.Pneumatics.PCM_CAN_ID);
     compressor.setClosedLoopControl(true);
-    // compressor.setClosedLoopControl(false);
 
-    boolean enabled = compressor.enabled();
-    boolean pressureSwitch = compressor.getPressureSwitchValue();
-    float current = compressor.getCompressorCurrent();
 
   }
 

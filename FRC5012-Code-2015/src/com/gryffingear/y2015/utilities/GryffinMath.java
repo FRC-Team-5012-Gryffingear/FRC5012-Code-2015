@@ -1,5 +1,11 @@
 package com.gryffingear.y2015.utilities;
 
+/**
+ * A set of math utilities for team 5012.
+ * 
+ * @author Jeremy
+ *
+ */
 public class GryffinMath {
 
   /**
@@ -111,6 +117,81 @@ public class GryffinMath {
   public static double signedSquare(double in, double k) {
 
     return in * Math.abs(in) * k;
+  }
+
+  /**
+   * Drive algorithm for FRC5012 2015
+   * 
+   * @param l
+   *          left joystick input
+   * @param r
+   *          right joystick input
+   * @param turbo
+   *          flag to control turbo mode. default is off.
+   * @return
+   */
+  public static double[] gryffinDrive(double l, double r, boolean turbo) {
+
+    double answer[] = { 0.0, 0.0 };
+
+    double scalar = 0.6; // Tune this between 0.0-1.0 to adjust throttle
+                         // sensitivity.
+    double tSens = 0.9; // Tune this between 0.0-1.0 to adjust turning
+                        // sensitivity
+
+    if (turbo) { // If turbo mode, no limit on speed
+      scalar = 1.0;
+    }
+
+    // Convert to arcade(throttle + turning) commands so we may adjust
+    // sensitivities of each orthogonal movement
+    double throttle = ((l + r) / 2) * scalar;
+    double turning = ((l - r) / 2);
+
+    // Turning movement is a signed square curve tuned according to driver feel.
+    turning = signedSquare(turning, scalar * tSens);
+
+    answer[0] = throttle + turning;
+    answer[1] = throttle - turning;
+
+    return answer;
+  }
+
+  /**
+   * Arcade drive variant of gryffindrive.
+   * 
+   * @param y
+   *          throttle input
+   * @param r
+   *          turning input
+   * @param turbo
+   *          turbo mode input
+   * @return an array containing tank drive outputs
+   */
+  public static double[] gryffinDriveArcade(double y, double r, boolean turbo) {
+
+    double answer[] = { 0.0, 0.0 };
+
+    double scalar = 0.6; // Tune this between 0.0-1.0 to adjust overall
+                         // sensitivity
+    double tSens = 0.9; // Tune this between 0.0-1.0 to adjust turning
+                        // sensitivity
+
+    if (turbo) { // If turbo mode, no limit on speed
+      scalar = 1.0;
+    }
+
+    // sensitivities of each orthogonal movement
+    double throttle = y * scalar;
+    double turning = -r;
+
+    // Turning movement is a signed square curve tuned according to driver feel.
+    turning = signedSquare(turning, scalar * tSens);
+
+    answer[0] = throttle + turning;
+    answer[1] = throttle - turning;
+
+    return answer;
   }
 
 }
