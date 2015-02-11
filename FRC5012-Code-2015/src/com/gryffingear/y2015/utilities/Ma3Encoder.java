@@ -1,6 +1,10 @@
 package com.gryffingear.y2015.utilities;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.AnalogTrigger;
+import edu.wpi.first.wpilibj.AnalogTriggerOutput.AnalogTriggerType;
+import edu.wpi.first.wpilibj.Counter;
+
 
 /**
  * Class representing an MA3 analog absolute encoder.
@@ -8,18 +12,29 @@ import edu.wpi.first.wpilibj.AnalogInput;
  * @author Jeremy
  *
  */
-public class Ma3Encoder extends AnalogInput {
+public class Ma3Encoder {
 
-  private final double MIN_VOLT = 0.0;
-  private final double MAX_VOLT = 4.76;
+  private final double MIN_VOLT = 0.05;
+  private final double MAX_VOLT = 4.7;
   private double m_prev = 0.0;
   private double m_curr = 0.0;
   private double m_rotations = 0.0;
   private double m_position = 0.0;
 
-  public Ma3Encoder(int port) {
+  private AnalogInput m_channel = null;
+  private AnalogTrigger m_trig = null;
+  private Counter m_count = null;
 
-    super(port);
+  public Ma3Encoder(int port) {
+    m_channel = new AnalogInput(port);
+    m_trig = new AnalogTrigger(m_channel);
+    m_count = new Counter();
+
+    m_trig.setLimitsVoltage(MIN_VOLT, MAX_VOLT);
+    m_count.setUpDownCounterMode();
+    m_count.setUpSource(m_trig, AnalogTriggerType.kRisingPulse);
+    m_count.setDownSource(m_trig, AnalogTriggerType.kFallingPulse);
+
   }
 
   /**
@@ -30,19 +45,9 @@ public class Ma3Encoder extends AnalogInput {
   public double get() {
 
     m_prev = m_curr;
-    m_curr = this.getVoltage();
+    m_curr = this.m_channel.getVoltage();
 
-    if (m_prev != m_curr) {
-      if (m_prev > 4.5 && m_curr < 0.2) { // going up
-        m_rotations += 1.0;
-        // System.out.println("+1 rot");
-      } else if (m_prev < 0.2 && m_curr > 4.5) {
-        m_rotations -= 1.0;
-        // System.out.println("-1 rot");
-      }
-    }
-
-    m_position = m_rotations + (m_curr / 4.76);
+    m_position = m_count.get() + (m_curr / 4.76);
 
     // Todo: get this to work.
     // Convert sawtooth wave of encoder signal to continuous number.
@@ -52,6 +57,7 @@ public class Ma3Encoder extends AnalogInput {
 
   public void reset() {
 
+    m_count.reset();
     m_position = 0;
   }
 
