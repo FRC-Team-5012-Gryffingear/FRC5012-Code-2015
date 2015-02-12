@@ -44,4 +44,10 @@ public class Robot {
     }
     return instance;
   }
+
+  public double getCurrent() {
+
+    return 0.0;
+    // Todo: make this return the total robot current
+  }
 }

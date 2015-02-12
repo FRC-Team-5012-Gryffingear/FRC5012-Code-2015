@@ -18,7 +18,7 @@ public class Ma3Encoder {
   private final double MAX_VOLT = 4.7;
   private double m_prev = 0.0;
   private double m_curr = 0.0;
-  private double m_rotations = 0.0;
+  private double m_offset = 0.0;
   private double m_position = 0.0;
 
   private AnalogInput m_channel = null;
@@ -47,7 +47,7 @@ public class Ma3Encoder {
     m_prev = m_curr;
     m_curr = this.m_channel.getVoltage();
 
-    m_position = m_count.get() + (m_curr / 4.76);
+    m_position = m_count.get() + ((m_curr - m_offset) / 4.76);
 
     // Todo: get this to work.
     // Convert sawtooth wave of encoder signal to continuous number.
@@ -59,6 +59,7 @@ public class Ma3Encoder {
 
     m_count.reset();
     m_position = 0;
+    m_offset = m_channel.getVoltage();
   }
 
 }

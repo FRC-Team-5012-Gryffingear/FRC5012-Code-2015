@@ -15,7 +15,8 @@ public class Main extends IterativeRobot {
   Joystick operator = new Joystick(Ports.Controls.OPERATOR_PORT);
 
   Robot bot = Robot.getInstance();
-  PowerDistributionPanel pdp = new PowerDistributionPanel();
+  PowerDistributionPanel pdp = new PowerDistributionPanel();// Todo: maybe move
+                                                            // this to robot?
   
   FileLogger log = new FileLogger("/home/lvuser/logs/");
 
@@ -59,6 +60,9 @@ public class Main extends IterativeRobot {
     } else {
       elevatorOut = operator.getRawAxis(1);
     }
+
+    // Todo: framework for closed-loop elevator operator controls
+    //
 
     bot.claw.setClaw(operator.getRawButton(6));
 

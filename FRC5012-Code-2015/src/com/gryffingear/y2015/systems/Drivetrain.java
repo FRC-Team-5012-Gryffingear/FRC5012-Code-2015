@@ -33,15 +33,21 @@ public class Drivetrain {
 
     in.clearStickyFaults();
     in.changeControlMode(CANTalon.ControlMode.PercentVbus);
-    in.setVoltageRampRate(Constants.Drivetrain.VRAMP_RATE); // Todo: move this
-                                                            // into constants.
+    in.setVoltageRampRate(Constants.Drivetrain.VRAMP_RATE);
     in.enableControl();
+    System.out.println("[CANTalon]" + in.getDescription() + " Initialized at device ID: "
+        + in.getDeviceID());
     return in;
   }
 
   public double getYaw() {
 
     return yaw.getAngle();
+  }
+
+  public void resetGyro() {
+
+    yaw.reset();
   }
 
   public void tankDrive(double leftv, double rightv) {
@@ -55,5 +61,11 @@ public class Drivetrain {
   public void tankDrive(double[] input) {
 
     tankDrive(input[0], input[1]);
+  }
+
+  public double getCurrent() {
+
+    return 0.0;
+    // Todo: return total system current.
   }
 }
