@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.Counter;
  */
 public class Ma3Encoder {
 
-  private final double MIN_VOLT = 0.05;
-  private final double MAX_VOLT = 4.7;
+  private final double MIN_VOLT = 0.1;
+  private final double MAX_VOLT = 4.65;
   private double m_prev = 0.0;
   private double m_curr = 0.0;
   private double m_offset = 0.0;
@@ -47,12 +47,14 @@ public class Ma3Encoder {
     m_prev = m_curr;
     m_curr = this.m_channel.getVoltage();
 
-    m_position = m_count.get() + ((m_curr - m_offset) / 4.76);
+    m_position = -(m_count.get() + ((m_curr - m_offset) / 4.76));
 
     // Todo: get this to work.
     // Convert sawtooth wave of encoder signal to continuous number.
+    if (m_position > 11.0)
+      m_position = 11.0;
 
-    return m_curr;// m_position;
+    return m_position;// m_position;
   }
 
   public void reset() {
@@ -61,5 +63,11 @@ public class Ma3Encoder {
     m_position = 0;
     m_offset = m_channel.getVoltage();
   }
+
+  public void setOffset(double offset) {
+
+    m_offset = offset;
+  }
+
 
 }

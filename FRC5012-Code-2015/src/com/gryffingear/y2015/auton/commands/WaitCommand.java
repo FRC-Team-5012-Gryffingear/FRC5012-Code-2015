@@ -1,71 +1,36 @@
 package com.gryffingear.y2015.auton.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import com.gryffingear.y2015.systems.Robot;
 
 
-public class WaitCommand {
+public class WaitCommand extends Command {
 
-    private double timeout = 0.0;
+  private double timeout = 0.0;
 
-    public WaitCommand(double timeout) {
-        this.timeout = timeout;
-    }
+  public WaitCommand(double timeout) {
 
-    protected void initialize() {
-        this.setTimeout(timeout);
-    }
+    this.timeout = timeout;
+  }
 
-    private void setTimeout(double timeout2) {
+  protected void initialize() {
 
-      
-    }
+    this.setTimeout(timeout);
+  }
 
-    protected void execute() {
+  protected void execute() {
 
-    }
+  }
 
-    protected void interrupted() {
+  protected void interrupted() {
 
-    }
+  }
 
-    protected void end() {
+  protected void end() {
 
-    }
+  }
 
-    protected boolean isFinished() {
-        return this.isTimedOut();
-    }
+  protected boolean isFinished() {
 
-    private boolean isTimedOut() {
-
-      
-      return false;
-    }
-
+    return this.isTimedOut();
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

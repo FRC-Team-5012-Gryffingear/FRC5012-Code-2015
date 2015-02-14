@@ -39,10 +39,17 @@ public class Elevator {
 
   public void set(double value) {
 
-    if (value < 0.0 && getLowerLimitSwitch()) {
+    value = -value;
+    if (value < 0.0 && getUpperLimitSwitch()) {
       value = 0.0;
-    } else if (value > 0.0 && getUpperLimitSwitch()) {
+    } else if (value > 0.0 && getLowerLimitSwitch()) {
       value = 0.0;
+    }
+
+    if (getLowerLimitSwitch()) {
+      this.posRef.reset();
+    } else if (getUpperLimitSwitch()) {
+      this.posRef.setOffset(11.0);
     }
 
     elevatorMotor.set(value);
@@ -101,6 +108,10 @@ public class Elevator {
     return this.state;
   }
 
+  public boolean isResetting() {
+
+    return this.state == States.RESET_DOWN;
+  }
   public static class States {
 
     public static final int DISABLED = 0;
@@ -111,6 +122,7 @@ public class Elevator {
     public static final int HOLDING = 5;
     public static final int TEST_CALIBRATE = 6;
     public static final int LIVE_CALIBRATE = 7;
+    public static final int RESET_DOWN = 8;
   }
 
   long timeSinceStateChange = 0;
@@ -197,6 +209,12 @@ public class Elevator {
         setState(lastState); // Return to the previously running state after
                              // calibration
       }
+    case States.RESET_DOWN: // Calibration during operation
+      if (!getLowerLimitSwitch()) {
+        output = -1.0;
+      } else {
+        this.setState(prevState);
+      }
     default:
       output = 0;
       epc.setEnabled(false);
@@ -208,6 +226,6 @@ public class Elevator {
       output = epc.get();
     }
 
-    elevatorMotor.set(output);
+    this.set(output);
   }
 }

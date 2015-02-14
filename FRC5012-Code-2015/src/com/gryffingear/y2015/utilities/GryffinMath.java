@@ -186,7 +186,8 @@ public class GryffinMath {
     double turning = -r;
 
     // Turning movement is a signed square curve tuned according to driver feel.
-    turning = signedSquare(turning, scalar * tSens);
+    // turning = signedSquare(turning, scalar * tSens);
+    turning = turning * tSens * scalar;
 
     answer[0] = throttle + turning;
     answer[1] = throttle - turning;

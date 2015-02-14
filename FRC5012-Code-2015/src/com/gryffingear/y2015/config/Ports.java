@@ -21,8 +21,8 @@ public class Ports {
   public static class Elevator {
 
     public static int ELEVATOR_MOTOR_PORT = 1;
-    public static int ELEVATOR_LOWER_LIMIT_SWITCH = 0;
-    public static int ELEVATOR_UPPER_LIMIT_SWITCH = 1;
+    public static int ELEVATOR_LOWER_LIMIT_SWITCH = 1;
+    public static int ELEVATOR_UPPER_LIMIT_SWITCH = 0;
     public static int ELEVATOR_ENCODER_PORT = 1;
   }
 
