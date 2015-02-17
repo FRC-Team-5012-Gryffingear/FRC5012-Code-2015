@@ -2,7 +2,6 @@ package com.gryffingear.y2015.utilities;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogTrigger;
-import edu.wpi.first.wpilibj.AnalogTriggerOutput.AnalogTriggerType;
 import edu.wpi.first.wpilibj.Counter;
 
 
@@ -27,14 +26,6 @@ public class Ma3Encoder {
 
   public Ma3Encoder(int port) {
     m_channel = new AnalogInput(port);
-    m_trig = new AnalogTrigger(m_channel);
-    m_count = new Counter();
-
-    m_trig.setLimitsVoltage(MIN_VOLT, MAX_VOLT);
-    m_count.setUpDownCounterMode();
-    m_count.setUpSource(m_trig, AnalogTriggerType.kRisingPulse);
-    m_count.setDownSource(m_trig, AnalogTriggerType.kFallingPulse);
-
   }
 
   /**
@@ -44,23 +35,12 @@ public class Ma3Encoder {
    */
   public double get() {
 
-    m_prev = m_curr;
-    m_curr = this.m_channel.getVoltage();
-
-    m_position = -(m_count.get() + ((m_curr - m_offset) / 4.76));
-
-    // Todo: get this to work.
-    // Convert sawtooth wave of encoder signal to continuous number.
-    if (m_position > 11.0)
-      m_position = 11.0;
-
-    return m_position;// m_position;
+    return ((m_channel.getVoltage() - m_offset) / 4.55) * 45.5;// * 45.5;// +
+                                                               // m_offset;
   }
 
   public void reset() {
 
-    m_count.reset();
-    m_position = 0;
     m_offset = m_channel.getVoltage();
   }
 

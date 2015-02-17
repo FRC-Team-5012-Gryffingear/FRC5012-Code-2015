@@ -13,7 +13,7 @@ public class Elevator {
   private DigitalInput lowerlimit_switch;
   private DigitalInput upperlimit_switch;
   private Ma3Encoder posRef = null;
-  private ElevatorPositionController epc = null;
+  public ElevatorPositionController epc = null;
 
   public Elevator(int elevator_port, int lowerlimit_port, int upperlimit_port, int encoderPort) {
 
@@ -49,7 +49,7 @@ public class Elevator {
     if (getLowerLimitSwitch()) {
       this.posRef.reset();
     } else if (getUpperLimitSwitch()) {
-      this.posRef.setOffset(11.0);
+      // this.posRef.setOffset(11.0);
     }
 
     elevatorMotor.set(value);
@@ -67,7 +67,7 @@ public class Elevator {
 
   public double getCurrent() {
 
-    return 0.0;
+    return elevatorMotor.getOutputCurrent();
     // Todo: read current from either PDP or CANTalon...
   }
 
@@ -149,7 +149,13 @@ public class Elevator {
 
     case States.OPEN_LOOP: // Open loop state. send input to output
       epc.setEnabled(false);
-      output = openLoopInput;
+      double scale = 1.0;
+      if ((this.getEncoder() > 38.0 && openLoopInput > 0.0)) {
+        scale = 0.5;
+      } else {
+        scale = 1;
+      }
+      output = openLoopInput * scale;
 
       break;
     case States.CLOSED_LOOP: // Open loop state. send input to output
@@ -210,11 +216,14 @@ public class Elevator {
                              // calibration
       }
     case States.RESET_DOWN: // Calibration during operation
+
+      epc.setEnabled(false);
       if (!getLowerLimitSwitch()) {
-        output = -1.0;
+          output = -1.0;
       } else {
         this.setState(prevState);
       }
+      break;
     default:
       output = 0;
       epc.setEnabled(false);

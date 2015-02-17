@@ -16,6 +16,8 @@ public class Ports {
     public static int DRIVE_RIGHT_A_PORT = 3;
     public static int DRIVE_RIGHT_B_PORT = 4;
     public static int GYRO_PORT = 0;
+    public static int ENCODER_A_PORT = 2;
+    public static int ENCODER_B_PORT = 3;
   }
 
   public static class Elevator {

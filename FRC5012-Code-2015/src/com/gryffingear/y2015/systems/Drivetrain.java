@@ -3,6 +3,7 @@ package com.gryffingear.y2015.systems;
 import com.gryffingear.y2015.config.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Gyro;
 
 public class Drivetrain {
@@ -13,10 +14,11 @@ public class Drivetrain {
   private CANTalon rightb = null;
 
   private Gyro yaw = null;
+  private Encoder enc = null;
 
   // Todo: comments.
 
-  public Drivetrain(int la, int lb, int ra, int rb, int gyro) {
+  public Drivetrain(int la, int lb, int ra, int rb, int gyro, int encA, int encB) {
 
     lefta = configureTalon(new CANTalon(la));
     leftb = configureTalon(new CANTalon(lb));
@@ -27,6 +29,8 @@ public class Drivetrain {
     yaw.initGyro();
     // yaw.reset();
 
+    enc = new Encoder(encA, encB);
+    enc.setDistancePerPulse(0.050264);
   }
 
   private CANTalon configureTalon(CANTalon in) {
@@ -46,8 +50,17 @@ public class Drivetrain {
   }
 
   public void resetGyro() {
-
     yaw.reset();
+  }
+
+  public double getDistance() {
+
+    return enc.getDistance();
+  }
+
+  public void resetEncoder() {
+
+    enc.reset();
   }
 
   public void tankDrive(double leftv, double rightv) {
@@ -65,7 +78,8 @@ public class Drivetrain {
 
   public double getCurrent() {
 
-    return 0.0;
+    return lefta.getOutputCurrent() + leftb.getOutputCurrent() + righta.getOutputCurrent()
+        + rightb.getOutputCurrent();
     // Todo: return total system current.
   }
 }

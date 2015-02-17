@@ -179,6 +179,12 @@ public class GryffinMath {
 
     if (turbo) { // If turbo mode, no limit on speed
       scalar = 1.0;
+    } else {
+      if (r < -0.5) {
+        r = -0.5;
+      } else if (r > 0.5) {
+        r = 0.5;
+      }
     }
 
     // sensitivities of each orthogonal movement
