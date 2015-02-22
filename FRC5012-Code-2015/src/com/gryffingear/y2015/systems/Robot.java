@@ -19,6 +19,10 @@ public class Robot {
   public Claw claw = null;
 
   public LedStrips led = null;
+
+  public Wings wings = null;
+
+  public Intake intake = null;
   PowerDistributionPanel pdp = new PowerDistributionPanel();
   private Robot() {
 
@@ -32,7 +36,13 @@ public class Robot {
     elevator = new Elevator(Ports.Elevator.ELEVATOR_MOTOR_PORT,
         Ports.Elevator.ELEVATOR_LOWER_LIMIT_SWITCH, Ports.Elevator.ELEVATOR_UPPER_LIMIT_SWITCH,
         Ports.Elevator.ELEVATOR_ENCODER_PORT);// Todo:
+
     led = new LedStrips(Ports.Led.LEFT_PORT, Ports.Led.RIGHT_PORT);
+
+    Wings wings = new Wings(Ports.Wings.WING_SOLENOID_PORT);
+
+    Intake intake = new Intake(Ports.Intake.INTAKE_SOLENOID_PORT, Ports.Intake.INTAKE_LEFT_PORT,
+        Ports.Intake.INTAKE_RIGHT_PORT);
 
     Compressor compressor = new Compressor(Ports.Pneumatics.PCM_CAN_ID);
     compressor.setClosedLoopControl(true);

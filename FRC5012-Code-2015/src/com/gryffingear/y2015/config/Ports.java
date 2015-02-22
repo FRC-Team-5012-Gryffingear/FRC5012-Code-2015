@@ -44,4 +44,17 @@ public class Ports {
     public static int RIGHT_PORT = 4;
   }
 
+  public static class Wings {
+
+    public static int WING_SOLENOID_PORT = 6;
+  }
+
+  public static class Intake {
+
+    public static int INTAKE_SOLENOID_PORT = 3;
+    public static int INTAKE_LEFT_PORT = 5;
+    public static int INTAKE_RIGHT_PORT = 6;
+  }
+
 }
+

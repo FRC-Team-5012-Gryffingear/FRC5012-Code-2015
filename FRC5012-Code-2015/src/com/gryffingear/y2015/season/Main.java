@@ -2,6 +2,7 @@ package com.gryffingear.y2015.season;
 
 import com.gryffingear.y2015.auton.OneToteRcAuton;
 import com.gryffingear.y2015.auton.TestAuton;
+import com.gryffingear.y2015.config.Constants;
 import com.gryffingear.y2015.config.Ports;
 import com.gryffingear.y2015.systems.Elevator;
 import com.gryffingear.y2015.systems.Robot;
@@ -89,25 +90,24 @@ public class Main extends IterativeRobot {
     // Operator Controls
     double elevatorOut = 0.0; // Elevator open loop output
 
-    if (!resetting) { // Operator control logic
+    if (!resetting) { // Elevator state switching logic.
       if (operator.getRawButton(1)) {
         eState = Elevator.States.RESET_DOWN;
         resetting = true;
       } else if (operator.getRawButton(2)) {
         eState = Elevator.States.CLOSED_LOOP;
-        elevatorPos = (7.92); // Above
-                                                                         // step
+        elevatorPos = Constants.Elevator.Setpoints.STEP;
       } else if (operator.getRawButton(4)) {
         eState = Elevator.States.CLOSED_LOOP;
-        elevatorPos = (5.3); // One
-                                                                        // tote
+        elevatorPos = Constants.Elevator.Setpoints.ONE_TOTE;
       } else if (operator.getRawButton(3)) {
         eState = Elevator.States.CLOSED_LOOP;
-        elevatorPos = (16.15); // Two
-                                                                          // totes
+        elevatorPos = Constants.Elevator.Setpoints.TWO_TOTE;
       } else if (Math.abs(operator.getRawAxis(1)) > 0.25) {
         eState = Elevator.States.OPEN_LOOP;
         elevatorOut = -operator.getRawAxis(1);
+      } else if (operator.getRawButton(8)) {
+        eState = Elevator.States.DISABLED;
       }
      } else {
       if (Math.abs(operator.getRawAxis(1)) > .5) {
@@ -121,14 +121,27 @@ public class Main extends IterativeRobot {
       elevatorOut = -1.0;
     }
 
-
-
+    // Set elevator inputs: open loop, position, and state.
     bot.elevator.setOpenLoop(elevatorOut);
     bot.elevator.setPosition(Math.max(elevatorPos - (6.0 * operator.getRawAxis(3)), 0.0));
     bot.elevator.setState(eState);
 
+    // Run elevator control loop!
     bot.elevator.run();
 
+    bot.wings.setWings(operator.getRawButton(7));
+
+    bot.intake.setActuator(operator.getRawButton(5));
+
+    double intakeOut = 0.0;
+    if (operator.getPOV() == 1) {
+      intakeOut = 1.0;
+    } else if (operator.getPOV() == 3) {
+      intakeOut = -1.0;
+    }
+    bot.intake.setMotors(intakeOut, intakeOut);
+
+    // Rumble logic here:
     bottomLimitPulse.set(bot.elevator.getLowerLimitSwitch());
     positionPulse.set(bot.elevator.epc.isAtTarget() && bot.elevator.epc.getEnabled());
 
@@ -150,16 +163,11 @@ public class Main extends IterativeRobot {
       operator.setRumble(RumbleType.kRightRumble, 0.0f);
     }
 
+    bot.claw.setClaw(operator.getRawButton(6)); // Claw control
 
-    // Todo: framework for closed-loop elevator operator controls
-    //
-
-    bot.claw.setClaw(operator.getRawButton(6));
-
-
-    System.out.println("e:" + bot.elevator.getEncoder());
-    bot.updateDashboard();
+    bot.updateDashboard(); // Call SmartDashboard update.
   }
+
 
   public void testInit() {
 

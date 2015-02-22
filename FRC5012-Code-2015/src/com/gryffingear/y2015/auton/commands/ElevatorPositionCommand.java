@@ -25,7 +25,7 @@ public class ElevatorPositionCommand extends Command {
 
   protected boolean isFinished() {
 
-    return this.isTimedOut();
+    return this.isTimedOut() || Robot.getInstance().elevator.epc.isAtTarget();
   }
 
   protected void execute() {

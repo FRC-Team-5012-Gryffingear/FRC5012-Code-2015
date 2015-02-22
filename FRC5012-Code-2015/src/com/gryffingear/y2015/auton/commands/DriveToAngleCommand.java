@@ -1,6 +1,7 @@
 package com.gryffingear.y2015.auton.commands;
 
 import com.gryffingear.y2015.systems.Robot;
+import com.gryffingear.y2015.utilities.GryffinMath;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -10,12 +11,16 @@ public class DriveToAngleCommand extends Command {
   private double angle = 0.0;
   private double timeout = 0.0;
 
+  double error = 0.0;
+
   public DriveToAngleCommand(double speed, double angle, double timeout) {
 
     this.speed = speed;
     this.angle = angle;
     this.timeout = timeout;
     this.setTimeout(timeout);
+
+    this.error = angle;
   }
 
   protected void initialize() {
@@ -25,13 +30,13 @@ public class DriveToAngleCommand extends Command {
 
   protected boolean isFinished() {
 
-    return this.isTimedOut();
+    return this.isTimedOut() || GryffinMath.equalsTolerance(error, 0.0, 0.5);
   }
 
   protected void execute() {
 
     double p = 0.025;
-    double error = Robot.getInstance().drive.getYaw() - this.angle;
+    error = Robot.getInstance().drive.getYaw() - this.angle;
     Robot.getInstance().drive.tankDrive(p * error * speed, -p * error * speed);
   }
 

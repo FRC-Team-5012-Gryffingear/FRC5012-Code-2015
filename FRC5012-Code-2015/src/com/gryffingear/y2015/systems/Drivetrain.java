@@ -80,6 +80,5 @@ public class Drivetrain {
 
     return lefta.getOutputCurrent() + leftb.getOutputCurrent() + righta.getOutputCurrent()
         + rightb.getOutputCurrent();
-    // Todo: return total system current.
   }
 }

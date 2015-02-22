@@ -1,5 +1,6 @@
 package com.gryffingear.y2015.systems.controllers;
 
+import com.gryffingear.y2015.utilities.Debouncer;
 import com.gryffingear.y2015.utilities.GryffinMath;
 import com.gryffingear.y2015.utilities.Ma3Encoder;
 
@@ -59,11 +60,14 @@ public class ElevatorPositionController {
 
   public boolean isAtTarget() {
 
-    return GryffinMath.equalsTolerance(pos, ref.get(), 1.0);
+    return atTarget && getEnabled();
   }
 
+  Debouncer atTargetDebouncer = new Debouncer(0.2);
+  boolean atTarget = false;
   public double get() {
 
+    atTarget = atTargetDebouncer.update(GryffinMath.equalsTolerance(pos, ref.get(), 1.0));
     // Calculations here.
     return kP * (pos - ref.get());
   }

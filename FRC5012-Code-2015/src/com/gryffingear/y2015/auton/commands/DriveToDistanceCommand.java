@@ -2,6 +2,7 @@
 package com.gryffingear.y2015.auton.commands;
 
 import com.gryffingear.y2015.systems.Robot;
+import com.gryffingear.y2015.utilities.GryffinMath;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -10,6 +11,7 @@ public class DriveToDistanceCommand extends Command {
   private double speed = 0.0;
   private double dist = 0.0;
   private double timeout = 0.0;
+  private double error = 0.0;
 
   public DriveToDistanceCommand(double speed, double dist, double timeout) {
 
@@ -17,6 +19,7 @@ public class DriveToDistanceCommand extends Command {
     this.dist = dist;
     this.timeout = timeout;
     this.setTimeout(timeout);
+    this.error = this.dist;
   }
 
   protected void initialize() {
@@ -26,7 +29,7 @@ public class DriveToDistanceCommand extends Command {
 
   protected boolean isFinished() {
 
-    return this.isTimedOut();
+    return this.isTimedOut() || GryffinMath.equalsTolerance(error, 0.0, 1.0);
   }
 
   protected void execute() {
@@ -34,7 +37,7 @@ public class DriveToDistanceCommand extends Command {
     double tp = 0.025;
     double t_error = Robot.getInstance().drive.getYaw();
     double p = 0.1;
-    double error = Robot.getInstance().drive.getDistance() - this.dist;
+    error = Robot.getInstance().drive.getDistance() - this.dist;
     Robot.getInstance().drive.tankDrive(((p * error) + (tp * t_error)) * speed,
         ((p * error) + (tp * t_error)) * speed);
   }
