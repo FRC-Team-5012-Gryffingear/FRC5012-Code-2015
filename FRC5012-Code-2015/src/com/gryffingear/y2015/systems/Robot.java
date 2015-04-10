@@ -39,9 +39,9 @@ public class Robot {
 
     led = new LedStrips(Ports.Led.LEFT_PORT, Ports.Led.RIGHT_PORT);
 
-    Wings wings = new Wings(Ports.Wings.WING_SOLENOID_PORT);
+    wings = new Wings(Ports.Wings.WING_SOLENOID_PORT);
 
-    Intake intake = new Intake(Ports.Intake.INTAKE_SOLENOID_PORT, Ports.Intake.INTAKE_LEFT_PORT,
+    intake = new Intake(Ports.Intake.INTAKE_SOLENOID_PORT, Ports.Intake.INTAKE_LEFT_PORT,
         Ports.Intake.INTAKE_RIGHT_PORT);
 
     Compressor compressor = new Compressor(Ports.Pneumatics.PCM_CAN_ID);

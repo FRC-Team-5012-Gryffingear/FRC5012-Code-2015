@@ -1,7 +1,6 @@
 package com.gryffingear.y2015.auton.commands;
 
 import com.gryffingear.y2015.systems.Robot;
-import com.gryffingear.y2015.utilities.GryffinMath;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -30,8 +29,10 @@ public class DriveToAngleCommand extends Command {
 
   protected boolean isFinished() {
 
-    return this.isTimedOut() || GryffinMath.equalsTolerance(error, 0.0, 0.5);
+    return this.isTimedOut(); // || GryffinMath.equalsTolerance(error, 0.0,
+                              // 0.5);
   }
+
 
   protected void execute() {
 

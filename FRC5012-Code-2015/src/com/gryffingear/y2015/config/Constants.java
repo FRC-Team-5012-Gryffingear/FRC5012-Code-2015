@@ -13,6 +13,11 @@ public class Constants {
       public static final double STEP = 7.92;
       public static final double ONE_TOTE = 5.3;
       public static final double TWO_TOTE = 16.15;
+
+      public static final double OVER_PICKUP = 10.8;
+      public static final double HOLD = 4.78;
+      public static final double DOWN = 8.39;
+      public static final double UP = 42.5;
     }
   }
 

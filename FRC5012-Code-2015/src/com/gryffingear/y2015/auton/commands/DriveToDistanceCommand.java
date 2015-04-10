@@ -38,8 +38,12 @@ public class DriveToDistanceCommand extends Command {
     double t_error = Robot.getInstance().drive.getYaw();
     double p = 0.1;
     error = Robot.getInstance().drive.getDistance() - this.dist;
-    Robot.getInstance().drive.tankDrive(((p * error) + (tp * t_error)) * speed,
-        ((p * error) + (tp * t_error)) * speed);
+
+    double out = ((p * error) + (tp * t_error)) * speed;
+    if (Math.abs(out) > speed) {
+      out = speed * Math.signum(out);
+    }
+    Robot.getInstance().drive.tankDrive(out, out);
   }
 
   protected void end() {

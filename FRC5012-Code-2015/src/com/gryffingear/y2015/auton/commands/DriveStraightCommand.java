@@ -32,7 +32,18 @@ public class DriveStraightCommand extends Command {
 
     double p = 0.025;
     double error = Robot.getInstance().drive.getYaw() - this.angle;
-    Robot.getInstance().drive.tankDrive(speed + (p * error), speed - (p * error));
+    double outL = speed + (p * error);
+    double outR = speed - (p * error);
+
+    if (Math.abs(outL) >= speed) {
+      outL = speed * Math.signum(outL);
+    }
+
+    if (Math.abs(outR) >= speed) {
+      outR = speed * Math.signum(outR);
+    }
+
+    Robot.getInstance().drive.tankDrive(outL, outR);
   }
 
   protected void end() {

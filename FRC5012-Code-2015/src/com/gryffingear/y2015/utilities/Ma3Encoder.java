@@ -35,13 +35,15 @@ public class Ma3Encoder {
    */
   public double get() {
 
-    return ((m_channel.getVoltage() - m_offset) / 4.55) * 45.5;// * 45.5;// +
+    return (((4.75 - m_channel.getVoltage()) - m_offset) / 4.75) * 50.0;// *
+                                                                        // 45.5;//
+                                                                        // +
                                                                // m_offset;
   }
 
   public void reset() {
 
-    m_offset = m_channel.getVoltage();
+    m_offset = (4.75 - m_channel.getVoltage());
   }
 
   public void setOffset(double offset) {

@@ -1,7 +1,9 @@
 package com.gryffingear.y2015.season;
 
+import com.gryffingear.y2015.auton.Autozone;
 import com.gryffingear.y2015.auton.OneToteRcAuton;
 import com.gryffingear.y2015.auton.TestAuton;
+import com.gryffingear.y2015.auton.WingAuton;
 import com.gryffingear.y2015.config.Constants;
 import com.gryffingear.y2015.config.Ports;
 import com.gryffingear.y2015.systems.Elevator;
@@ -33,39 +35,30 @@ public class Main extends IterativeRobot {
 
   @Override
   public void robotInit() {
-
     autonChooser.addObject("Test Auton", new TestAuton());
     autonChooser.addObject("One Tote + RC Auton", new OneToteRcAuton());
+    autonChooser.addDefault("Autozone", new Autozone());
+    autonChooser.addObject("WingAuton", new WingAuton());
     SmartDashboard.putData("auton Chooser", autonChooser);
   }
 
   @Override
   public void autonomousInit() {
-
-    Scheduler.getInstance().removeAll();
-    if (currAuton != null) { // Cancel auton if it hasn't already ended.
-      currAuton.cancel();
-      currAuton = null;
-    }
+    cancelAuton();
     Scheduler.getInstance().enable();
-    Scheduler.getInstance().add(new TestAuton());
+    // Scheduler.getInstance().add(new Autozone());
+    // Scheduler.getInstance().add(new WingAuton());
   }
 
   @Override
   public void autonomousPeriodic() {
 
-    Scheduler.getInstance().run();
+    // Scheduler.getInstance().run();
   }
 
   @Override
   public void teleopInit() {
-
-    Scheduler.getInstance().removeAll();
-    Scheduler.getInstance().disable();
-    if (currAuton != null) { // Cancel auton if it hasn't already ended.
-      currAuton.cancel();
-      currAuton = null;
-    }
+    cancelAuton();
   }
 
   boolean resetting = false;
@@ -96,13 +89,16 @@ public class Main extends IterativeRobot {
         resetting = true;
       } else if (operator.getRawButton(2)) {
         eState = Elevator.States.CLOSED_LOOP;
-        elevatorPos = Constants.Elevator.Setpoints.STEP;
+        elevatorPos = Constants.Elevator.Setpoints.OVER_PICKUP;
       } else if (operator.getRawButton(4)) {
         eState = Elevator.States.CLOSED_LOOP;
-        elevatorPos = Constants.Elevator.Setpoints.ONE_TOTE;
+        elevatorPos = Constants.Elevator.Setpoints.UP;
       } else if (operator.getRawButton(3)) {
         eState = Elevator.States.CLOSED_LOOP;
-        elevatorPos = Constants.Elevator.Setpoints.TWO_TOTE;
+        elevatorPos = Constants.Elevator.Setpoints.DOWN;
+      } else if (operator.getRawButton(6)) {
+        eState = Elevator.States.CLOSED_LOOP;
+        elevatorPos = Constants.Elevator.Setpoints.HOLD;
       } else if (Math.abs(operator.getRawAxis(1)) > 0.25) {
         eState = Elevator.States.OPEN_LOOP;
         elevatorOut = -operator.getRawAxis(1);
@@ -129,17 +125,12 @@ public class Main extends IterativeRobot {
     // Run elevator control loop!
     bot.elevator.run();
 
-    bot.wings.setWings(operator.getRawButton(7));
+    bot.wings.setWings(operator.getRawButton(5));
 
     bot.intake.setActuator(operator.getRawButton(5));
 
-    double intakeOut = 0.0;
-    if (operator.getPOV() == 1) {
-      intakeOut = 1.0;
-    } else if (operator.getPOV() == 3) {
-      intakeOut = -1.0;
-    }
-    bot.intake.setMotors(intakeOut, intakeOut);
+    double intakeOut = operator.getRawAxis(5);
+    bot.intake.setMotors(intakeOut, -intakeOut);
 
     // Rumble logic here:
     bottomLimitPulse.set(bot.elevator.getLowerLimitSwitch());
@@ -163,7 +154,7 @@ public class Main extends IterativeRobot {
       operator.setRumble(RumbleType.kRightRumble, 0.0f);
     }
 
-    bot.claw.setClaw(operator.getRawButton(6)); // Claw control
+    bot.claw.setClaw(operator.getRawButton(8)); // Claw control
 
     bot.updateDashboard(); // Call SmartDashboard update.
   }
@@ -171,12 +162,7 @@ public class Main extends IterativeRobot {
 
   public void testInit() {
 
-    Scheduler.getInstance().removeAll();
-    Scheduler.getInstance().disable();
-    if (currAuton != null) { // Cancel auton if it hasn't already ended.
-      currAuton.cancel();
-      currAuton = null;
-    }
+    cancelAuton();
     bot.elevator.resetEncoder();
   }
   /**
@@ -193,6 +179,16 @@ public class Main extends IterativeRobot {
   public void disabledPeriodic() {
 
     bot.updateDashboard();
+  }
+
+  public void cancelAuton() {
+
+    Scheduler.getInstance().removeAll();
+    Scheduler.getInstance().disable();
+    if (currAuton != null) { // Cancel auton if it hasn't already ended.
+      currAuton.cancel();
+      currAuton = null;
+    }
   }
 
 }
