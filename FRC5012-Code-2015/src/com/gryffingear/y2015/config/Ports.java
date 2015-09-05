@@ -1,6 +1,9 @@
 package com.gryffingear.y2015.config;
 
+
 public class Ports {
+
+  public static int STATIC_WING_PORT = 7;
 
   public static class Controls {
 
@@ -47,7 +50,9 @@ public class Ports {
   public static class Wings {
 
     public static int WING_SOLENOID_PORT = 6;
+
   }
+
 
   public static class Intake {
 
@@ -55,6 +60,7 @@ public class Ports {
     public static int INTAKE_LEFT_PORT = 5;
     public static int INTAKE_RIGHT_PORT = 6;
   }
+
 
 }
 

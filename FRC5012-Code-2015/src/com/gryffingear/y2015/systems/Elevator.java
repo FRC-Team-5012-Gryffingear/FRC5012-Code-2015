@@ -40,17 +40,12 @@ public class Elevator {
   public void set(double value) {
 
     value = -value;
-    if (value < 0.0 && getUpperLimitSwitch()) {
-      value = 0.0;
-    } else if (value > 0.0 && getLowerLimitSwitch()) {
-      value = 0.0;
-    }
-
-    if (getLowerLimitSwitch()) {
-      this.posRef.reset();
-    } else if (getUpperLimitSwitch()) {
-      // this.posRef.setOffset(11.0);
-    }
+    /*
+     * if (value < 0.0 && getUpperLimitSwitch()) { value = 0.0; } else if (value
+     * > 0.0 && getLowerLimitSwitch()) { value = 0.0; } if
+     * (getLowerLimitSwitch()) { this.posRef.reset(); } else if
+     * (getUpperLimitSwitch()) { // this.posRef.setOffset(11.0); }
+     */
 
     elevatorMotor.set(value);
   }

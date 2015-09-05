@@ -4,9 +4,7 @@ import com.gryffingear.y2015.auton.Autozone;
 import com.gryffingear.y2015.auton.OneToteRcAuton;
 import com.gryffingear.y2015.auton.TestAuton;
 import com.gryffingear.y2015.auton.WingAuton;
-import com.gryffingear.y2015.config.Constants;
 import com.gryffingear.y2015.config.Ports;
-import com.gryffingear.y2015.systems.Elevator;
 import com.gryffingear.y2015.systems.Robot;
 import com.gryffingear.y2015.utilities.FileLogger;
 import com.gryffingear.y2015.utilities.GryffinMath;
@@ -27,11 +25,13 @@ public class Main extends IterativeRobot {
 
   Robot bot = Robot.getInstance();
   
+  // StaticWing = new Solenoid(Ports.STATIC_WING_PORT);
 
   FileLogger log = new FileLogger("/home/lvuser/logs/");
 
   SendableChooser autonChooser = new SendableChooser();
   CommandGroup currAuton = null;
+
 
   @Override
   public void robotInit() {
@@ -41,19 +41,36 @@ public class Main extends IterativeRobot {
     autonChooser.addObject("WingAuton", new WingAuton());
     SmartDashboard.putData("auton Chooser", autonChooser);
   }
+  int autCount = 0;
 
   @Override
   public void autonomousInit() {
+
+    autCount = 0;
     cancelAuton();
     Scheduler.getInstance().enable();
     // Scheduler.getInstance().add(new Autozone());
-    // Scheduler.getInstance().add(new WingAuton());
+    boolean auton = true;
+    if (auton) {
+      Scheduler.getInstance().add(new WingAuton());
+    }
+
+    bot.elevator.set(1.0);
+    ;
   }
+
 
   @Override
   public void autonomousPeriodic() {
 
-    // Scheduler.getInstance().run();
+    if (autCount < 10) {
+      bot.elevator.set(1.0);
+    } else {
+      bot.elevator.set(0.0);
+    }
+    Scheduler.getInstance().run();
+
+    autCount++;
   }
 
   @Override
@@ -81,55 +98,46 @@ public class Main extends IterativeRobot {
     bot.led.setRight(true);
 
     // Operator Controls
-    double elevatorOut = 0.0; // Elevator open loop output
+    double elevatorOut = 0.0;
 
-    if (!resetting) { // Elevator state switching logic.
-      if (operator.getRawButton(1)) {
-        eState = Elevator.States.RESET_DOWN;
-        resetting = true;
-      } else if (operator.getRawButton(2)) {
-        eState = Elevator.States.CLOSED_LOOP;
-        elevatorPos = Constants.Elevator.Setpoints.OVER_PICKUP;
-      } else if (operator.getRawButton(4)) {
-        eState = Elevator.States.CLOSED_LOOP;
-        elevatorPos = Constants.Elevator.Setpoints.UP;
-      } else if (operator.getRawButton(3)) {
-        eState = Elevator.States.CLOSED_LOOP;
-        elevatorPos = Constants.Elevator.Setpoints.DOWN;
-      } else if (operator.getRawButton(6)) {
-        eState = Elevator.States.CLOSED_LOOP;
-        elevatorPos = Constants.Elevator.Setpoints.HOLD;
-      } else if (Math.abs(operator.getRawAxis(1)) > 0.25) {
-        eState = Elevator.States.OPEN_LOOP;
-        elevatorOut = -operator.getRawAxis(1);
-      } else if (operator.getRawButton(8)) {
-        eState = Elevator.States.DISABLED;
-      }
-     } else {
-      if (Math.abs(operator.getRawAxis(1)) > .5) {
-        resetting = false;
-        eState = Elevator.States.OPEN_LOOP;
-      }
+    // Elevator open loop output
 
-      if (bot.elevator.getLowerLimitSwitch()) {
-        resetting = false;
-      }
-      elevatorOut = -1.0;
-    }
+    /*
+     * if (!resetting) { // Elevator state switching logic. if
+     * (operator.getRawButton(1)) { eState = Elevator.States.RESET_DOWN;
+     * resetting = true; } else if (operator.getRawButton(2)) { eState =
+     * Elevator.States.CLOSED_LOOP; elevatorPos =
+     * Constants.Elevator.Setpoints.OVER_PICKUP; } else if
+     * (operator.getRawButton(4)) { eState = Elevator.States.CLOSED_LOOP;
+     * elevatorPos = Constants.Elevator.Setpoints.UP; } else if
+     * (operator.getRawButton(3)) { eState = Elevator.States.CLOSED_LOOP;
+     * elevatorPos = Constants.Elevator.Setpoints.DOWN; } else if
+     * (operator.getRawButton(6)) { eState = Elevator.States.CLOSED_LOOP;
+     * elevatorPos = Constants.Elevator.Setpoints.HOLD; } else if
+     * (Math.abs(operator.getRawAxis(1)) > 0.25) { eState =
+     * Elevator.States.OPEN_LOOP; elevatorOut = -operator.getRawAxis(1); } else
+     * if (operator.getRawButton(8)) { eState = Elevator.States.DISABLED; } }
+     * else { if (Math.abs(operator.getRawAxis(1)) > .5) { resetting = false;
+     * eState = Elevator.States.OPEN_LOOP; } if
+     * (bot.elevator.getLowerLimitSwitch()) { resetting = false; } elevatorOut =
+     * -1.0; }
+     */
 
     // Set elevator inputs: open loop, position, and state.
-    bot.elevator.setOpenLoop(elevatorOut);
-    bot.elevator.setPosition(Math.max(elevatorPos - (6.0 * operator.getRawAxis(3)), 0.0));
-    bot.elevator.setState(eState);
+    // bot.elevator.setOpenLoop(-operator.getRawAxis(1));
+    // bot.elevator.setPosition(Math.max(elevatorPos - (6.0 *
+    // operator.getRawAxis(3)), 0.0));
+    // bot.elevator.setState(Elevator.States.OPEN_LOOP);
 
     // Run elevator control loop!
-    bot.elevator.run();
+    // bot.elevator.run();
 
     bot.wings.setWings(operator.getRawButton(5));
 
     bot.intake.setActuator(operator.getRawButton(5));
 
-    double intakeOut = operator.getRawAxis(5);
+
+    double intakeOut = -operator.getRawAxis(1);
     bot.intake.setMotors(intakeOut, -intakeOut);
 
     // Rumble logic here:
