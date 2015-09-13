@@ -14,6 +14,20 @@ public class Claw {
     clawSolenoid = new Solenoid(Ports.Pneumatics.PCM_CAN_ID, clawSol);
   }
 
+  boolean prevIn = false;
+  boolean out = false;
+
+  public void toggleClaw(boolean in) {
+
+    if (in && (prevIn != in)) {
+      out = !out;
+    }
+
+    setClaw(out);
+
+    prevIn = in;
+  }
+
   public void setClaw(boolean state) {
 
     clawSolenoid.set(state);

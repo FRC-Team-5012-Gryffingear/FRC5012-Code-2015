@@ -33,7 +33,7 @@ public class Ports {
 
   public static class Claw {
 
-    public static int CLAW_SOLENOID_PORT = 5;
+    public static int CLAW_SOLENOID_PORT = 3;
   }
 
   public static class Pneumatics {
@@ -56,7 +56,7 @@ public class Ports {
 
   public static class Intake {
 
-    public static int INTAKE_SOLENOID_PORT = 3;
+    public static int INTAKE_SOLENOID_PORT = 5;
     public static int INTAKE_LEFT_PORT = 5;
     public static int INTAKE_RIGHT_PORT = 6;
   }

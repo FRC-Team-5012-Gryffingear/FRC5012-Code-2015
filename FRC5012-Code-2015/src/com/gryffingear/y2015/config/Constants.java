@@ -17,7 +17,7 @@ public class Constants {
       public static final double OVER_PICKUP = 10.8;
       public static final double HOLD = 4.78;
       public static final double DOWN = 8.39;
-      public static final double UP = 42.5;
+      public static final double UP = 30.5;
     }
   }
 

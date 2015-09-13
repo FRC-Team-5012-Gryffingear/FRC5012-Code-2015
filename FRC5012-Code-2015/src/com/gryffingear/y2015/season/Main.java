@@ -4,7 +4,9 @@ import com.gryffingear.y2015.auton.Autozone;
 import com.gryffingear.y2015.auton.OneToteRcAuton;
 import com.gryffingear.y2015.auton.TestAuton;
 import com.gryffingear.y2015.auton.WingAuton;
+import com.gryffingear.y2015.config.Constants;
 import com.gryffingear.y2015.config.Ports;
+import com.gryffingear.y2015.systems.Elevator;
 import com.gryffingear.y2015.systems.Robot;
 import com.gryffingear.y2015.utilities.FileLogger;
 import com.gryffingear.y2015.utilities.GryffinMath;
@@ -41,36 +43,27 @@ public class Main extends IterativeRobot {
     autonChooser.addObject("WingAuton", new WingAuton());
     SmartDashboard.putData("auton Chooser", autonChooser);
   }
-  int autCount = 0;
 
   @Override
   public void autonomousInit() {
 
-    autCount = 0;
     cancelAuton();
     Scheduler.getInstance().enable();
-    // Scheduler.getInstance().add(new Autozone());
+    Scheduler.getInstance().add(new Autozone());
     boolean auton = true;
     if (auton) {
-      Scheduler.getInstance().add(new WingAuton());
+      // Scheduler.getInstance().add(new Autozone());
+      // Scheduler.getInstance().add((CommandGroup) autonChooser.getSelected());
     }
 
-    bot.elevator.set(1.0);
-    ;
+
   }
 
 
   @Override
   public void autonomousPeriodic() {
 
-    if (autCount < 10) {
-      bot.elevator.set(1.0);
-    } else {
-      bot.elevator.set(0.0);
-    }
     Scheduler.getInstance().run();
-
-    autCount++;
   }
 
   @Override
@@ -86,6 +79,7 @@ public class Main extends IterativeRobot {
   long bottomStart = 0;
   PulseTriggerBoolean positionPulse = new PulseTriggerBoolean();
   long posStart = 0;
+
   @Override
   public void teleopPeriodic() {
 
@@ -102,40 +96,50 @@ public class Main extends IterativeRobot {
 
     // Elevator open loop output
 
-    /*
-     * if (!resetting) { // Elevator state switching logic. if
-     * (operator.getRawButton(1)) { eState = Elevator.States.RESET_DOWN;
-     * resetting = true; } else if (operator.getRawButton(2)) { eState =
-     * Elevator.States.CLOSED_LOOP; elevatorPos =
-     * Constants.Elevator.Setpoints.OVER_PICKUP; } else if
-     * (operator.getRawButton(4)) { eState = Elevator.States.CLOSED_LOOP;
-     * elevatorPos = Constants.Elevator.Setpoints.UP; } else if
-     * (operator.getRawButton(3)) { eState = Elevator.States.CLOSED_LOOP;
-     * elevatorPos = Constants.Elevator.Setpoints.DOWN; } else if
-     * (operator.getRawButton(6)) { eState = Elevator.States.CLOSED_LOOP;
-     * elevatorPos = Constants.Elevator.Setpoints.HOLD; } else if
-     * (Math.abs(operator.getRawAxis(1)) > 0.25) { eState =
-     * Elevator.States.OPEN_LOOP; elevatorOut = -operator.getRawAxis(1); } else
-     * if (operator.getRawButton(8)) { eState = Elevator.States.DISABLED; } }
-     * else { if (Math.abs(operator.getRawAxis(1)) > .5) { resetting = false;
-     * eState = Elevator.States.OPEN_LOOP; } if
-     * (bot.elevator.getLowerLimitSwitch()) { resetting = false; } elevatorOut =
-     * -1.0; }
-     */
+    if (!resetting) { // Elevator state switching logic.
+      if (operator.getRawButton(1)) {
+        eState = Elevator.States.RESET_DOWN;
+        resetting = true;
+      } else if (operator.getRawButton(2)) {
+        eState = Elevator.States.CLOSED_LOOP;
+        elevatorPos = Constants.Elevator.Setpoints.OVER_PICKUP;
+      } else if (operator.getRawButton(4)) {
+        eState = Elevator.States.CLOSED_LOOP;
+        elevatorPos = Constants.Elevator.Setpoints.UP;
+      } else if (operator.getRawButton(3)) {
+        eState = Elevator.States.CLOSED_LOOP;
+        elevatorPos = Constants.Elevator.Setpoints.DOWN;
+      } else if (operator.getRawButton(5)) {
+        eState = Elevator.States.CLOSED_LOOP;
+        elevatorPos = Constants.Elevator.Setpoints.HOLD;
+      } else if (Math.abs(operator.getRawAxis(1)) > 0.25) {
+        eState = Elevator.States.OPEN_LOOP;
+        elevatorOut = -operator.getRawAxis(1);
+      } else if (operator.getRawButton(8)) {
+        eState = Elevator.States.DISABLED;
+      }
+    } else {
+      if (Math.abs(operator.getRawAxis(1)) > .5) {
+        resetting = false;
+        eState = Elevator.States.OPEN_LOOP;
+      }
+
+      if (bot.elevator.getLowerLimitSwitch()) {
+        resetting = false;
+      }
+      elevatorOut = -1.0;
+    }
 
     // Set elevator inputs: open loop, position, and state.
-    // bot.elevator.setOpenLoop(-operator.getRawAxis(1));
-    // bot.elevator.setPosition(Math.max(elevatorPos - (6.0 *
-    // operator.getRawAxis(3)), 0.0));
-    // bot.elevator.setState(Elevator.States.OPEN_LOOP);
-
+    bot.elevator.setOpenLoop(-operator.getRawAxis(1));
+    bot.elevator.setPosition(Math.max(elevatorPos - (18.0 * operator.getRawAxis(3)), 0.0));
+    bot.elevator.setState(eState);
     // Run elevator control loop!
-    // bot.elevator.run();
+    bot.elevator.run();
 
     bot.wings.setWings(operator.getRawButton(5));
 
     bot.intake.setActuator(operator.getRawButton(5));
-
 
     double intakeOut = -operator.getRawAxis(1);
     bot.intake.setMotors(intakeOut, -intakeOut);
@@ -162,7 +166,7 @@ public class Main extends IterativeRobot {
       operator.setRumble(RumbleType.kRightRumble, 0.0f);
     }
 
-    bot.claw.setClaw(operator.getRawButton(8)); // Claw control
+    bot.claw.toggleClaw(operator.getRawButton(6)); // Claw control
 
     bot.updateDashboard(); // Call SmartDashboard update.
   }
@@ -186,6 +190,7 @@ public class Main extends IterativeRobot {
   @Override
   public void disabledPeriodic() {
 
+    System.out.println("Elevator pos: " + bot.elevator.getEncoder());
     bot.updateDashboard();
   }
 
