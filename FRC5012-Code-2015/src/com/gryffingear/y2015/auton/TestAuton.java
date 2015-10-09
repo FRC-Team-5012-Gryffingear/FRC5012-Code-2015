@@ -1,8 +1,8 @@
 package com.gryffingear.y2015.auton;
 
-import com.gryffingear.y2015.auton.commands.ElevatorPositionCommand;
-import com.gryffingear.y2015.auton.commands.ElevatorResetCommand;
-import com.gryffingear.y2015.auton.commands.ElevatorRunCommand;
+import com.gryffingear.y2015.auton.commands.ArcadeDriveCommand;
+import com.gryffingear.y2015.auton.commands.IntakeCommand;
+import com.gryffingear.y2015.auton.commands.TrapezoidalDriveCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -10,12 +10,11 @@ public class TestAuton extends CommandGroup {
 
   public TestAuton() {
 
-    this.addSequential(new ElevatorResetCommand());
-    this.addParallel(new ElevatorRunCommand(15.0));
-    this.addSequential(new ElevatorPositionCommand(10.0, 4.0));
-    this.addSequential(new ElevatorPositionCommand(20.0, 4.0));
-    this.addSequential(new ElevatorPositionCommand(30.0, 4.0));
-    this.addSequential(new ElevatorPositionCommand(35.0, 4.0));
+    this.addSequential(new IntakeCommand(0.0, 0.0, true));
+    this.addSequential(new ArcadeDriveCommand(0, 0.5, 0.25));
+
+    this.addSequential(new IntakeCommand(1.0, -1.0, false));
+    this.addSequential(new TrapezoidalDriveCommand(0.5, 0.0, 2.5));
 
   }
 }

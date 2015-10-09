@@ -7,9 +7,10 @@ public class Ports {
 
   public static class Controls {
 
-    public static int DRIVER_PORT = 0;
+    public static int DRIVER_PORTL = 0;
+    public static int DRIVER_PORTR = 1;
 
-    public static int OPERATOR_PORT = 1;
+    public static int OPERATOR_PORT = 2;
   }
 
   public static class Drivetrain {
@@ -29,6 +30,7 @@ public class Ports {
     public static int ELEVATOR_LOWER_LIMIT_SWITCH = 1;
     public static int ELEVATOR_UPPER_LIMIT_SWITCH = 0;
     public static int ELEVATOR_ENCODER_PORT = 1;
+    public static int BRAKE_PORT = 1;
   }
 
   public static class Claw {
@@ -49,14 +51,14 @@ public class Ports {
 
   public static class Wings {
 
-    public static int WING_SOLENOID_PORT = 6;
+    public static int WING_SOLENOID_PORT = 2;
 
   }
 
 
   public static class Intake {
 
-    public static int INTAKE_SOLENOID_PORT = 5;
+    public static int INTAKE_SOLENOID_PORT = 2;
     public static int INTAKE_LEFT_PORT = 5;
     public static int INTAKE_RIGHT_PORT = 6;
   }

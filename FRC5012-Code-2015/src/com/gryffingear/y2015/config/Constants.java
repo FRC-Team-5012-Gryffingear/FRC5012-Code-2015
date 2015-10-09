@@ -14,15 +14,16 @@ public class Constants {
       public static final double ONE_TOTE = 5.3;
       public static final double TWO_TOTE = 16.15;
 
-      public static final double OVER_PICKUP = 10.8;
-      public static final double HOLD = 4.78;
-      public static final double DOWN = 8.39;
-      public static final double UP = 30.5;
+      public static final double OVER_PICKUP = 15.8;
+      public static final double HOLD = 2.5;
+      public static final double DOWN = 12.39;
+      public static final double UP = 20.5;
     }
   }
 
   public static class Drivetrain {
-    public static final double VRAMP_RATE = 48.0;
+
+    public static final double VRAMP_RATE = 30.0;
 
   }
 

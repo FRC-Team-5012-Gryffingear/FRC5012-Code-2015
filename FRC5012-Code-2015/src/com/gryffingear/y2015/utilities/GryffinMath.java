@@ -136,7 +136,7 @@ public class GryffinMath {
 
     double scalar = 0.6; // Tune this between 0.0-1.0 to adjust throttle
                          // sensitivity.
-    double tSens = 0.9; // Tune this between 0.0-1.0 to adjust turning
+    double tSens = 1.0; // Tune this between 0.0-1.0 to adjust turning
                         // sensitivity
 
     if (turbo) { // If turbo mode, no limit on speed
@@ -146,10 +146,10 @@ public class GryffinMath {
     // Convert to arcade(throttle + turning) commands so we may adjust
     // sensitivities of each orthogonal movement
     double throttle = ((l + r) / 2) * scalar;
-    double turning = ((l - r) / 2);
+    double turning = ((l - r) / 2) * tSens;
 
     // Turning movement is a signed square curve tuned according to driver feel.
-    turning = signedSquare(turning, scalar * tSens);
+    // turning = signedSquare(turning, scalar * tSens);
 
     answer[0] = throttle + turning;
     answer[1] = throttle - turning;
@@ -172,7 +172,7 @@ public class GryffinMath {
 
     double answer[] = { 0.0, 0.0 };
 
-    double scalar = 0.6; // Tune this between 0.0-1.0 to adjust overall
+    double scalar = 0.55; // Tune this between 0.0-1.0 to adjust overall
                          // sensitivity
     double tSens = 0.9; // Tune this between 0.0-1.0 to adjust turning
                         // sensitivity
@@ -180,10 +180,10 @@ public class GryffinMath {
     if (turbo) { // If turbo mode, no limit on speed
       scalar = 1.0;
     } else {
-      if (r < -0.5) {
-        r = -0.5;
-      } else if (r > 0.5) {
-        r = 0.5;
+      if (r < -scalar) {
+        r = -scalar;
+      } else if (r > scalar) {
+        r = scalar;
       }
     }
 

@@ -36,7 +36,7 @@ public class Robot {
 
     elevator = new Elevator(Ports.Elevator.ELEVATOR_MOTOR_PORT,
         Ports.Elevator.ELEVATOR_LOWER_LIMIT_SWITCH, Ports.Elevator.ELEVATOR_UPPER_LIMIT_SWITCH,
-        Ports.Elevator.ELEVATOR_ENCODER_PORT);// Todo:
+        Ports.Elevator.ELEVATOR_ENCODER_PORT, Ports.Elevator.BRAKE_PORT);// Todo:
 
     led = new LedStrips(Ports.Led.LEFT_PORT, Ports.Led.RIGHT_PORT);
 

@@ -1,11 +1,13 @@
 package com.gryffingear.y2015.systems;
 
 import com.gryffingear.y2015.config.Constants;
+import com.gryffingear.y2015.config.Ports;
 import com.gryffingear.y2015.systems.controllers.ElevatorPositionController;
 import com.gryffingear.y2015.utilities.Ma3Encoder;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public class Elevator {
 
@@ -14,8 +16,10 @@ public class Elevator {
   private DigitalInput upperlimit_switch;
   private Ma3Encoder posRef = null;
   public ElevatorPositionController epc = null;
+  private Solenoid brake = null;
 
-  public Elevator(int elevator_port, int lowerlimit_port, int upperlimit_port, int encoderPort) {
+  public Elevator(int elevator_port, int lowerlimit_port, int upperlimit_port, int encoderPort,
+      int brakePort) {
 
     upperlimit_switch = new DigitalInput(upperlimit_port);
     lowerlimit_switch = new DigitalInput(lowerlimit_port);
@@ -25,6 +29,8 @@ public class Elevator {
     epc = new ElevatorPositionController(posRef);
     epc.setEnabled(true);
     epc.setGains(0.5);
+
+    brake = new Solenoid(Ports.Pneumatics.PCM_CAN_ID, brakePort);
   }
 
   private CANTalon configureTalon(CANTalon in) {
@@ -38,6 +44,10 @@ public class Elevator {
   }
 
   public void set(double value) {
+    
+    if(value < 0) {
+      value = Math.max(-0.625, value);
+    }
 
     value = -value;
     /*
@@ -106,6 +116,11 @@ public class Elevator {
   public boolean isResetting() {
 
     return this.state == States.RESET_DOWN;
+  }
+
+  public boolean isMovingDown() {
+
+    return this.elevatorMotor.get() > 0.0;
   }
   public static class States {
 
@@ -214,7 +229,7 @@ public class Elevator {
 
       epc.setEnabled(false);
       if (!getLowerLimitSwitch()) {
-          output = -1.0;
+        output = -0.750;
       } else {
         this.setState(prevState);
       }
@@ -231,5 +246,10 @@ public class Elevator {
     }
 
     this.set(output);
+  }
+
+  public void setBrake(boolean state) {
+
+    brake.set(state);
   }
 }
