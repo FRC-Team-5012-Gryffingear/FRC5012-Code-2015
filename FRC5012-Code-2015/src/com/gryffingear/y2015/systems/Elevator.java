@@ -229,7 +229,7 @@ public class Elevator {
 
       epc.setEnabled(false);
       if (!getLowerLimitSwitch()) {
-        output = -0.750;
+        output = -1.0;
       } else {
         this.setState(prevState);
       }
@@ -252,4 +252,36 @@ public class Elevator {
 
     brake.set(state);
   }
+  
+  long twitchStart = 0;
+  boolean prevTwitch = false;
+
+  /**
+   * Set actuator with twich input.
+   * 
+   * @param wantOpen
+   * @param wantTwitch
+   */
+  public void setBrake(boolean wantOpen, boolean wantTwitch) {
+
+    boolean twitchOut = false;
+
+    if (wantTwitch && (wantTwitch != prevTwitch)) {
+      twitchStart = System.currentTimeMillis();
+    }
+
+    if ((System.currentTimeMillis() - twitchStart < 50)
+        || (System.currentTimeMillis() - twitchStart > 100 && System.currentTimeMillis()
+            - twitchStart < 150)
+        || (System.currentTimeMillis() - twitchStart > 200 && System.currentTimeMillis()
+            - twitchStart < 250)) {
+      twitchOut = true;
+    } else {
+      twitchOut = false;
+    }
+
+    setBrake(twitchOut || wantOpen);
+
+  }
+
 }

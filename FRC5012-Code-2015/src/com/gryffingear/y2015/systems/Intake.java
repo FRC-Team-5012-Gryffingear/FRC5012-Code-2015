@@ -34,36 +34,6 @@ public class Intake {
     intakeSolenoid.set(state);
   }
 
-  long twitchStart = 0;
-  boolean prevTwitch = false;
-
-  /**
-   * Set actuator with twich input.
-   * 
-   * @param wantOpen
-   * @param wantTwitch
-   */
-  public void setActuator(boolean wantOpen, boolean wantTwitch) {
-
-    boolean twitchOut = false;
-
-    if (wantTwitch && (wantTwitch != prevTwitch)) {
-      twitchStart = System.currentTimeMillis();
-    }
-
-    if ((System.currentTimeMillis() - twitchStart < 100)
-        || (System.currentTimeMillis() - twitchStart > 200 && System.currentTimeMillis()
-            - twitchStart < 300)
-        || (System.currentTimeMillis() - twitchStart > 400 && System.currentTimeMillis()
-            - twitchStart < 500)) {
-      twitchOut = true;
-    } else {
-      twitchOut = false;
-    }
-
-    setActuator(twitchOut || wantOpen);
-
-  }
 
   public void setMotors(double left, double right) {
 

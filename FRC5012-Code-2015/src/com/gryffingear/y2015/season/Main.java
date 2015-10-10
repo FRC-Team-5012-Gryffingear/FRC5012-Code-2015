@@ -1,6 +1,7 @@
 package com.gryffingear.y2015.season;
 
 import com.gryffingear.y2015.auton.Autozone;
+import com.gryffingear.y2015.auton.LandfillAuto;
 import com.gryffingear.y2015.auton.TestAuton;
 import com.gryffingear.y2015.auton.WingAuton;
 import com.gryffingear.y2015.config.Constants;
@@ -48,13 +49,22 @@ public class Main extends IterativeRobot {
 
   @Override
   public void autonomousInit() {
+    
+    if (driverL.getRawAxis(4) < -.75) {
+      currAuton = new LandfillAuto();
+  } else if (driverL.getRawAxis(4) > .75) {
+      currAuton = new Autozone();
+  } else {
+      currAuton = new TestAuton();
+      
+  }
 
     cancelAuton();
     Scheduler.getInstance().enable();
     // Scheduler.getInstance().add(new Autozone());
     boolean auton = true;
     if (auton) {
-      Scheduler.getInstance().add(new TestAuton());
+      Scheduler.getInstance().add(currAuton);
       // Scheduler.getInstance().add((CommandGroup) autonChooser.getSelected());
     }
 
@@ -142,7 +152,7 @@ public class Main extends IterativeRobot {
       if (bot.elevator.getLowerLimitSwitch()) {
         resetting = false;
       }
-      elevatorOut = -0.750;
+      elevatorOut = -01.0;
     }
 
     // Set elevator inputs: open loop, position, and state.
@@ -172,8 +182,7 @@ public class Main extends IterativeRobot {
     }
 
 
-    bot.intake.setActuator(intakePos || resetting,
-        operator.getRawButton(10));
+    bot.intake.setActuator(intakePos || resetting);
 
     double intakeOut = operator.getRawAxis(5);
 

@@ -10,11 +10,5 @@ public class TestAuton extends CommandGroup {
 
   public TestAuton() {
 
-    this.addSequential(new IntakeCommand(0.0, 0.0, true));
-    this.addSequential(new ArcadeDriveCommand(0, 0.5, 0.25));
-
-    this.addSequential(new IntakeCommand(1.0, -1.0, false));
-    this.addSequential(new TrapezoidalDriveCommand(0.5, 0.0, 2.5));
-
   }
 }
