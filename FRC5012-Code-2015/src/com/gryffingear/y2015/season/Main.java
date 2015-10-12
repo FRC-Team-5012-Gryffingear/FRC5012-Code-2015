@@ -40,19 +40,15 @@ public class Main extends IterativeRobot {
   @Override
   public void robotInit() {
 
-    autonChooser.addObject("Do Nothing", new TestAuton());
-
-    autonChooser.addDefault("Autozone", new Autozone());
-    autonChooser.addObject("WingAuton", new WingAuton());
-    SmartDashboard.putData("auton Chooser", autonChooser);
   }
 
   @Override
   public void autonomousInit() {
     
-    if (driverL.getRawAxis(4) < -.75) {
+    // Left driver joystick throttle selects auton 
+    if (driverL.getRawAxis(2) < -.75) {
       currAuton = new LandfillAuto();
-  } else if (driverL.getRawAxis(4) > .75) {
+  } else if (driverL.getRawAxis(2) > .75) {
       currAuton = new Autozone();
   } else {
       currAuton = new TestAuton();
@@ -61,20 +57,16 @@ public class Main extends IterativeRobot {
 
     cancelAuton();
     Scheduler.getInstance().enable();
-    // Scheduler.getInstance().add(new Autozone());
+    
     boolean auton = true;
     if (auton) {
-      Scheduler.getInstance().add(currAuton);
-      // Scheduler.getInstance().add((CommandGroup) autonChooser.getSelected());
+      Scheduler.getInstance().add(currAuton); 
     }
-
-
   }
 
 
   @Override
   public void autonomousPeriodic() {
-
     Scheduler.getInstance().run();
   }
 
@@ -162,18 +154,6 @@ public class Main extends IterativeRobot {
     // Run elevator control loop!
     bot.elevator.run();
 
-    // bot.wings.setWings(driver.getRawButton(1));
-
-    // if (driver.getRawButton(2)) {
-    // bot.wings.winch.set(Relay.Value.kForward);
-    // } else if (driver.getRawButton(4)) {
-    // bot.wings.winch.set(Relay.Value.kReverse);
-    // } else {
-    // bot.wings.winch.set(Relay.Value.kOff);
-    // }
-
-    // Force intake open if elevator is going down.
-
     boolean wantIntakeOpen = (operator.getRawAxis(2) > 0.25);
 
     intakeTogglePulse.set(wantIntakeOpen);
@@ -182,7 +162,7 @@ public class Main extends IterativeRobot {
     }
 
 
-    bot.intake.setActuator(intakePos || resetting);
+    bot.intake.setActuator(intakePos || bot.elevator.getEncoder() < 3.5);
 
     double intakeOut = operator.getRawAxis(5);
 
@@ -211,10 +191,8 @@ public class Main extends IterativeRobot {
     }
 
     boolean brakeOut = ((bot.elevator.getEncoder() < 3.5));
-    if (operator.getRawButton(8)) {
-      brakeOut = !brakeOut;
-    }
-    bot.elevator.setBrake(brakeOut);
+  
+    bot.elevator.setBrake(false, operator.getRawButton(8));
 
     clawOut = clawOut || operator.getRawButton(6);
     bot.claw.toggleClaw(clawOut); // Claw control
