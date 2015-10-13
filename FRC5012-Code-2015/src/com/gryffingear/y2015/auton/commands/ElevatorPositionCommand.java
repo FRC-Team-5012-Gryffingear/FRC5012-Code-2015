@@ -33,6 +33,7 @@ public class ElevatorPositionCommand extends Command {
     Robot.getInstance().elevator.setPosition(position);
     Robot.getInstance().elevator.setState(Elevator.States.CLOSED_LOOP);
 
+    //Robot.getInstance().elevator.run();
   }
 
   protected void end() {

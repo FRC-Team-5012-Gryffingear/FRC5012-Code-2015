@@ -13,14 +13,14 @@ public class IntakeCommand extends Command {
   public IntakeCommand(double speedL, double speedR, boolean state) {
 
     this.state = state;
-    this.speedL = speedL;
+    this.speedL = -speedL;
     this.speedR = speedR;
 
   }
 
   protected void initialize() {
 
-    Robot.getInstance().intake.setMotors(speedL, speedL);
+    Robot.getInstance().intake.setMotors(speedL, speedR);
     Robot.getInstance().intake.setActuator(state);
   }
 

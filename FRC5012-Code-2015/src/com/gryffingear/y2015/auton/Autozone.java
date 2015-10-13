@@ -11,7 +11,9 @@ public class Autozone extends CommandGroup {
 
     // this.addSequential(new DriveToDistanceCommand(.5, 96, 5));
     //this.addSequential(new WingCommand(false));
-    this.addSequential(new TrapezoidalDriveCommand(1.0, 0.0, 1.0));
+    //this.addSequential(new TrapezoidalDriveCommand(1.0, 0.0, 1.0));
+
+    this.addSequential(new ArcadeDriveCommand(0.5, 0, 2.0));
     this.addSequential(new ArcadeDriveCommand(0.0, -0.5, 1.0));
   }
 }

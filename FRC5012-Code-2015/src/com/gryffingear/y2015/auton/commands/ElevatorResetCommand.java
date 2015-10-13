@@ -5,13 +5,12 @@ import com.gryffingear.y2015.systems.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ElevatorResetCommand extends Command {
-
   private double speed = 0.0;
   private double timeout = 0.0;
 
   public ElevatorResetCommand() {
 
-    this.speed = -.75;
+    this.speed = -.55;
     this.timeout = 0.5;
     this.setTimeout(timeout);
   }

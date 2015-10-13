@@ -43,19 +43,42 @@ public class Main extends IterativeRobot {
   }
 
   @Override
+  public void disabledPeriodic() {
+    if (driverL.getRawAxis(2) < -.75) {
+      currAuton = new LandfillAuto();
+      System.out.println("1: Landfill Auto");
+  } else if (driverL.getRawAxis(2) > .75) {
+      currAuton = new Autozone();
+      System.out.println("2: Autozone / 3Can Auto");
+  } else {
+      currAuton = new TestAuton();
+      System.out.println("3: Do Nothing Auto");
+      
+  }
+    SmartDashboard.putData("auton Chooser", autonChooser);
+    System.out.println("Elevator pos: " + bot.elevator.getEncoder());
+    bot.updateDashboard();
+  }
+
+  @Override
   public void autonomousInit() {
     
     // Left driver joystick throttle selects auton 
-    if (driverL.getRawAxis(2) < -.75) {
-      currAuton = new LandfillAuto();
-  } else if (driverL.getRawAxis(2) > .75) {
-      currAuton = new Autozone();
-  } else {
-      currAuton = new TestAuton();
-      
-  }
+ 
 
     cancelAuton();
+    if (driverL.getRawAxis(2) < -.75) {
+      currAuton = new LandfillAuto();
+      System.out.println("1: Landfill Auto");
+  } else if (driverL.getRawAxis(2) > .75) {
+      currAuton = new Autozone();
+      System.out.println("2: Autozone / 3Can Auto");
+  } else {
+      currAuton = new TestAuton();
+      System.out.println("3: Do Nothing Auto");
+      
+  }
+    
     Scheduler.getInstance().enable();
     
     boolean auton = true;
@@ -164,8 +187,15 @@ public class Main extends IterativeRobot {
 
     bot.intake.setActuator(intakePos || bot.elevator.getEncoder() < 3.5);
 
-    double intakeOut = operator.getRawAxis(5);
+    double intakeOut = 0.0;
 
+    if(operator.getRawAxis(5) > 0.3) {
+      intakeOut = 1.0;
+    } else if(operator.getRawAxis(5) < -0.3) {
+      intakeOut = -1.0;
+    } else {
+      intakeOut = 0.0;
+    }
     bot.intake.setMotors(intakeOut, -intakeOut);
 
     // Rumble logic here:
@@ -217,13 +247,6 @@ public class Main extends IterativeRobot {
     bot.led.setRight(true);
   }
 
-  @Override
-  public void disabledPeriodic() {
-
-    SmartDashboard.putData("auton Chooser", autonChooser);
-    System.out.println("Elevator pos: " + bot.elevator.getEncoder());
-    bot.updateDashboard();
-  }
 
   public void cancelAuton() {
 
