@@ -31,7 +31,7 @@ public class TrapezoidalDriveCommand extends Command {
 
   protected void initialize() {
 
-    double tempSpeed = Math.abs(speed);
+    double tempSpeed = (speed);
 
     // Generate profile
 
@@ -55,8 +55,9 @@ public class TrapezoidalDriveCommand extends Command {
         }
 
       }
+      //out *= Math.signum(speed);
 
-      trajectory.add(new Double(out));
+      trajectory.add(new Double(out) );
     }
 
     startTime = System.currentTimeMillis();
@@ -78,7 +79,7 @@ public class TrapezoidalDriveCommand extends Command {
 
     double out = 0.0;
     if (frame < trajectory.size()) {
-      out = trajectory.get(frame).doubleValue() * Math.signum(speed);
+      out = trajectory.get(frame).doubleValue();
     } else {
       out = 0.0;
     }
