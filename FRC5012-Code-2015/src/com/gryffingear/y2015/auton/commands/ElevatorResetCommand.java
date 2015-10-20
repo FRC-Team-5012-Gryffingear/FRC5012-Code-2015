@@ -10,7 +10,7 @@ public class ElevatorResetCommand extends Command {
 
   public ElevatorResetCommand() {
 
-    this.speed = -.55;
+    this.speed = -1;
     this.timeout = 0.5;
     this.setTimeout(timeout);
   }

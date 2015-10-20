@@ -66,6 +66,7 @@ public class Robot {
   }
 
   public void updateDashboard() {
+    
     SmartDashboard.putNumber("yaw", this.drive.getYaw());
     SmartDashboard.putNumber("drive_current", this.drive.getCurrent());
     SmartDashboard.putNumber("lift_current", this.elevator.getCurrent());
@@ -75,6 +76,7 @@ public class Robot {
     SmartDashboard.putBoolean("lift_upper", this.elevator.getUpperLimitSwitch());
     SmartDashboard.putBoolean("lift_lower", this.elevator.getLowerLimitSwitch());
     SmartDashboard.putNumber("lift_pos", this.elevator.getEncoder());
+    SmartDashboard.putNumber("lift_set", this.elevator.epc.getSetpoint());
     SmartDashboard.putNumber("drive_encoder", this.drive.getDistance());
   }
 }

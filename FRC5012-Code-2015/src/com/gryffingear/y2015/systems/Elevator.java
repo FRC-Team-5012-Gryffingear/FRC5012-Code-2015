@@ -137,6 +137,8 @@ public class Elevator {
 
   long timeSinceStateChange = 0;
   public void run() {
+    
+    System.out.println("kP: " + epc.getP());
 
     prevState = state;
 
@@ -266,6 +268,7 @@ public class Elevator {
 
     boolean twitchOut = false;
 
+    
     if (wantTwitch && (wantTwitch != prevTwitch)) {
       twitchStart = System.currentTimeMillis();
     }

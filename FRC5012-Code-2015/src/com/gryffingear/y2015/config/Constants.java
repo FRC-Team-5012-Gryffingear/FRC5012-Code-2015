@@ -4,9 +4,9 @@ public class Constants {
 
   public static class Elevator {
 
-    public static final double P_UP = 0.06;
-    public static final double P_DN = 0.06;
-    public static final double P_HOLD = .06;
+    public static final double P_UP = 0.5;
+    public static final double P_DN = 0.5;
+    public static final double P_HOLD = 0.5;
 
     public static class Setpoints {
 

@@ -20,12 +20,14 @@ public class ElevatorPositionCommand extends Command {
 
   protected void initialize() {
 
-    Robot.getInstance().elevator.set(speed);
+    Robot.getInstance().elevator.setPosition(position);
+    Robot.getInstance().elevator.setState(Elevator.States.CLOSED_LOOP);
+
   }
 
   protected boolean isFinished() {
 
-    return this.isTimedOut() || Robot.getInstance().elevator.epc.isAtTarget();
+    return this.isTimedOut();
   }
 
   protected void execute() {

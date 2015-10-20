@@ -37,6 +37,10 @@ public class ElevatorPositionController {
 
     this.kP = newP;
   }
+  
+  public double getP() {
+    return kP;
+  }
 
   public void setPosition(double newPos) {
 
@@ -63,6 +67,9 @@ public class ElevatorPositionController {
     return atTarget && getEnabled();
   }
 
+  public double getSetpoint() {
+    return pos;
+  }
   Debouncer atTargetDebouncer = new Debouncer(0.2);
   boolean atTarget = false;
   public double get() {

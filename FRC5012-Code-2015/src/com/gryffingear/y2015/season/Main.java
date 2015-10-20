@@ -3,7 +3,7 @@ package com.gryffingear.y2015.season;
 import com.gryffingear.y2015.auton.Autozone;
 import com.gryffingear.y2015.auton.LandfillAuto;
 import com.gryffingear.y2015.auton.TestAuton;
-import com.gryffingear.y2015.auton.WingAuton;
+import com.gryffingear.y2015.auton.ThreeTote;
 import com.gryffingear.y2015.config.Constants;
 import com.gryffingear.y2015.config.Ports;
 import com.gryffingear.y2015.systems.Elevator;
@@ -45,8 +45,8 @@ public class Main extends IterativeRobot {
   @Override
   public void disabledPeriodic() {
     if (driverL.getRawAxis(2) < -.75) {
-      currAuton = new LandfillAuto();
-      System.out.println("1: Landfill Auto");
+      currAuton = new ThreeTote();
+      System.out.println("1: 3Tote Auto");
   } else if (driverL.getRawAxis(2) > .75) {
       currAuton = new Autozone();
       System.out.println("2: Autozone / 3Can Auto");
@@ -68,8 +68,8 @@ public class Main extends IterativeRobot {
 
     cancelAuton();
     if (driverL.getRawAxis(2) < -.75) {
-      currAuton = new LandfillAuto();
-      System.out.println("1: Landfill Auto");
+      currAuton = new ThreeTote();
+      System.out.println("1: 3Tote Auto");
   } else if (driverL.getRawAxis(2) > .75) {
       currAuton = new Autozone();
       System.out.println("2: Autozone / 3Can Auto");
@@ -91,6 +91,7 @@ public class Main extends IterativeRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    bot.updateDashboard();
   }
 
   @Override
@@ -185,7 +186,7 @@ public class Main extends IterativeRobot {
     }
 
 
-    bot.intake.setActuator(intakePos || bot.elevator.getEncoder() < 3.5);
+    bot.intake.setActuator(intakePos || bot.elevator.getEncoder() < 7.5);
 
     double intakeOut = 0.0;
 
